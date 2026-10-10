@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1f2d34">
   <meta name="description" content="Kenangan kelas XMPLB1 dalam satu tempat.">
   <title>XMPLB1</title>
   <link rel="icon" type="image/png" href="logo.png">
@@ -36,6 +37,7 @@
     html {
       scroll-behavior: smooth;
       scroll-padding-top: var(--tinggi-nav);
+      -webkit-text-size-adjust: 100%;
     }
 
     body {
@@ -43,6 +45,7 @@
       color: var(--tinta);
       background: var(--kertas);
       line-height: 1.6;
+      overflow-x: clip;
     }
 
     img { max-width: 100%; }
@@ -295,7 +298,9 @@
     .anggota:nth-child(4n + 3) { transform: rotate(1.5deg); }
     .anggota:nth-child(4n) { transform: rotate(-2deg); }
 
-    .anggota:hover { transform: rotate(0deg) scale(1.03); }
+    @media (hover: hover) {
+      .anggota:hover { transform: rotate(0deg) scale(1.03); }
+    }
 
     .anggota-foto {
       position: relative;
@@ -433,9 +438,12 @@
     .foto:nth-child(3n + 2) { transform: rotate(2deg); }
     .foto:nth-child(3n) { transform: rotate(-1.5deg); }
 
-    .foto:hover,
     .foto:focus-visible {
       transform: rotate(0deg) scale(1.03);
+    }
+
+    @media (hover: hover) {
+      .foto:hover { transform: rotate(0deg) scale(1.03); }
     }
 
     /* ===== Playlist ===== */
@@ -471,9 +479,11 @@
       transition: transform 0.2s ease, background 0.2s ease;
     }
 
-    .tombol-spotify:hover {
-      background: #e8431f;
-      transform: translateY(-2px);
+    @media (hover: hover) {
+      .tombol-spotify:hover {
+        background: #e8431f;
+        transform: translateY(-2px);
+      }
     }
 
     .spotify {
@@ -530,14 +540,38 @@
       line-height: 1.7;
     }
 
-    .kotak-form {
-      max-width: 620px;
+    .kotak-area {
+      display: grid;
+      grid-template-columns: minmax(0, 620px) minmax(0, 1fr);
+      gap: 3rem;
+      align-items: start;
       margin-top: 2rem;
+    }
+
+    .kotak-form {
       padding: 1.75rem;
       border-radius: 12px;
       background: var(--putih);
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
     }
+
+    .pratinjau {
+      position: sticky;
+      top: calc(var(--tinggi-nav) + 2rem);
+      max-width: 420px;
+    }
+
+    .pratinjau-label {
+      margin-bottom: 1.1rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(31, 45, 52, 0.6);
+    }
+
+    .pratinjau .lembar { min-height: 200px; }
+    .lembar-isi.kosong { opacity: 0.45; }
 
     .kotak-form label {
       display: block;
@@ -585,9 +619,11 @@
       transition: transform 0.2s ease, background 0.2s ease;
     }
 
-    .tombol-kirim:hover:not(:disabled) {
-      background: #e8431f;
-      transform: translateY(-2px);
+    @media (hover: hover) {
+      .tombol-kirim:hover:not(:disabled) {
+        background: #e8431f;
+        transform: translateY(-2px);
+      }
     }
 
     .tombol-kirim:disabled { opacity: 0.55; cursor: not-allowed; }
@@ -750,6 +786,7 @@
       display: block;
       max-width: 92vw;
       max-height: 80vh;
+      max-height: 78dvh;
       margin: 0 auto;
       border-radius: 8px;
     }
@@ -792,17 +829,123 @@
       to { opacity: 1; transform: scale(1); }
     }
 
+    /* ===== Interaktif ===== */
+    .progres {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 30;
+      height: 3px;
+      background: var(--merah);
+      transform: scaleX(0);
+      transform-origin: left;
+      pointer-events: none;
+    }
+
+    .ke-atas {
+      position: fixed;
+      right: 1.25rem;
+      bottom: 1.25rem;
+      z-index: 15;
+      width: 48px;
+      height: 48px;
+      border: none;
+      border-radius: 50%;
+      background: var(--tinta);
+      color: #fff;
+      font-size: 1.4rem;
+      line-height: 1;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      visibility: hidden;
+      opacity: 0;
+      translate: 0 10px;
+      transition: opacity 0.25s ease, translate 0.25s ease, visibility 0.25s, background 0.2s ease;
+    }
+
+    .ke-atas.tampil {
+      visibility: visible;
+      opacity: 1;
+      translate: 0 0;
+    }
+
+    .ke-atas:focus-visible { outline-color: var(--merah); }
+
+    @media (hover: hover) {
+      .ke-atas:hover { background: var(--merah); }
+      .foto:hover { animation: ayun 0.9s ease-in-out; }
+    }
+
+    .reveal {
+      opacity: 0;
+      translate: 0 28px;
+      transition: opacity 0.7s ease var(--tunda, 0ms), translate 0.7s ease var(--tunda, 0ms), transform 0.3s ease;
+    }
+
+    .reveal.terlihat {
+      opacity: 1;
+      translate: 0 0;
+    }
+
+    .anggota,
+    .kotak-daftar .lembar {
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .ayun { animation: ayun 1s ease-in-out; }
+
+    @keyframes ayun {
+      0%   { rotate: 0deg; }
+      20%  { rotate: 5deg; }
+      40%  { rotate: -3.5deg; }
+      60%  { rotate: 2deg; }
+      80%  { rotate: -1deg; }
+      100% { rotate: 0deg; }
+    }
+
+    .konfeti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 50;
+      width: 100%;
+      height: 0;
+      pointer-events: none;
+    }
+
+    .konfeti span {
+      position: absolute;
+      top: -16px;
+      width: 10px;
+      height: 14px;
+      border-radius: 2px;
+      animation: jatuh var(--durasi, 2.4s) ease-in forwards;
+    }
+
+    @keyframes jatuh {
+      to {
+        translate: var(--geser, 0px) 105vh;
+        rotate: var(--putar, 360deg);
+      }
+    }
+
+    @media (max-width: 980px) {
+      .kotak-area { grid-template-columns: 1fr; }
+      .pratinjau { display: none; }
+    }
+
     /* ===== Responsif ===== */
-    @media (max-width: 900px) and (min-width: 701px) {
+    @media (max-width: 1100px) and (min-width: 861px) {
       .menu { gap: 1.1rem; }
       .menu a { font-size: 0.85rem; }
     }
 
-    @media (max-width: 700px) {
-      :root { --sisi: 6vw; }
-
+    @media (max-width: 860px) {
       .navbar { padding: 1rem var(--sisi); }
       .navbar.scroll { padding: 0.8rem var(--sisi); }
+      .navbar:has(.menu.buka) { background: rgba(31, 45, 52, 0.97); }
 
       .tombol-menu { display: block; }
 
@@ -814,7 +957,10 @@
         display: none;
         flex-direction: column;
         gap: 0.25rem;
+        max-height: calc(100vh - 70px);
+        max-height: calc(100dvh - 70px);
         padding: 0.75rem var(--sisi) 1.25rem;
+        overflow-y: auto;
         background: rgba(31, 45, 52, 0.97);
       }
 
@@ -824,15 +970,27 @@
         padding: 0.6rem 0;
         font-size: 1rem;
       }
+    }
+
+    @media (max-width: 700px) {
+      :root { --sisi: 6vw; }
 
       .slider::after {
         background: linear-gradient(0deg, rgba(14, 22, 27, 0.8), rgba(14, 22, 27, 0.3));
       }
 
-      .hero-teks { right: var(--sisi); }
+      .hero-teks {
+        top: auto;
+        bottom: 4.5rem;
+        right: var(--sisi);
+        transform: none;
+      }
+
+      .hero-teks h1 { font-size: clamp(1.8rem, 8vw, 2.4rem); }
+      .hero-teks p { font-size: 1.05rem; }
       .titik-wadah { bottom: 1.5rem; }
 
-      .bagian { padding: 5rem var(--sisi); }
+      .bagian { padding: 4rem var(--sisi); }
 
       .cerita-isi {
         grid-template-columns: 1fr;
@@ -850,7 +1008,7 @@
       .kotak-daftar { grid-template-columns: 1fr; }
       .kotak-form { padding: 1.25rem; }
 
-      .struktur-grid { gap: 2rem 1rem; }
+      .struktur-grid { gap: 2.25rem 1.75rem; }
 
       .surat { font-size: 1.05rem; }
       .surat .pembuka { font-size: 1.2rem; }
@@ -859,12 +1017,17 @@
 
       .galeri {
         grid-template-columns: repeat(2, 1fr);
-        gap: 2rem 1rem;
+        gap: 2rem 1.25rem;
       }
 
       .prestasi li {
         grid-template-columns: 4.5rem 1fr;
         gap: 1rem;
+      }
+
+      .lb-tombol {
+        width: 40px;
+        height: 40px;
       }
     }
 
@@ -883,12 +1046,24 @@
       .navbar,
       .tombol-spotify,
       .tombol-kirim,
+      .ke-atas,
       .menu a::after { transition: none; }
+
+      .reveal {
+        opacity: 1;
+        translate: none;
+        transition: none;
+      }
+
+      .ayun,
+      .foto:hover { animation: none; }
     }
   </style>
 </head>
 
 <body>
+  <div class="progres" id="progres" aria-hidden="true"></div>
+
   <nav class="navbar" id="navbar">
     <a href="index.html" class="logo">XMPLB1</a>
     <button type="button" class="tombol-menu" id="tombol-menu" aria-label="Buka menu" aria-expanded="false" aria-controls="menu">&#9776;</button>
@@ -1001,19 +1176,29 @@
       <h2>Kotak Surat</h2>
       <p class="kotak-intro">Tulis pesan, kesan, atau kenangan buat XMPLB1. Surat yang sudah terkirim bisa dibaca semua orang, tapi tidak bisa diubah atau dihapus.</p>
 
-      <form class="kotak-form" id="form-surat" autocomplete="off">
-        <label for="surat-nama">Nama (boleh dikosongkan)</label>
-        <input type="text" id="surat-nama" maxlength="30" placeholder="Anonim">
+      <div class="kotak-area">
+        <form class="kotak-form" id="form-surat" autocomplete="off">
+          <label for="surat-nama">Nama (boleh dikosongkan)</label>
+          <input type="text" id="surat-nama" maxlength="30" placeholder="Anonim">
 
-        <label for="surat-pesan">Isi surat</label>
-        <textarea id="surat-pesan" maxlength="600" rows="6" required placeholder="Tulis suratmu di sini..."></textarea>
+          <label for="surat-pesan">Isi surat</label>
+          <textarea id="surat-pesan" maxlength="600" rows="6" required placeholder="Tulis suratmu di sini..."></textarea>
 
-        <div class="kotak-bawah">
-          <span id="surat-hitung">0 / 600</span>
-          <button type="submit" class="tombol-kirim" id="surat-kirim">Kirim surat</button>
-        </div>
-        <p class="kotak-status" id="surat-status" role="status"></p>
-      </form>
+          <div class="kotak-bawah">
+            <span id="surat-hitung">0 / 600</span>
+            <button type="submit" class="tombol-kirim" id="surat-kirim">Kirim surat</button>
+          </div>
+          <p class="kotak-status" id="surat-status" role="status"></p>
+        </form>
+
+        <aside class="pratinjau" aria-hidden="true">
+          <p class="pratinjau-label">Pratinjau</p>
+          <div class="lembar">
+            <p class="lembar-isi kosong" id="pratinjau-isi">Suratmu akan muncul di sini...</p>
+            <p class="lembar-dari">- <span id="pratinjau-nama">Anonim</span></p>
+          </div>
+        </aside>
+      </div>
 
       <ul class="kotak-daftar" id="daftar-surat"></ul>
       <p class="kotak-kosong" id="surat-kosong" hidden>Belum ada surat. Jadi yang pertama!</p>
@@ -1091,6 +1276,8 @@
   <footer class="kaki">
     <p>XMPLB1 &copy; 2026</p>
   </footer>
+
+  <button type="button" class="ke-atas" id="ke-atas" aria-label="Kembali ke atas">&#8593;</button>
 
   <!-- Lightbox -->
   <dialog class="lightbox" id="lightbox" aria-label="Foto diperbesar">
@@ -1285,6 +1472,114 @@
       if (e.key === "ArrowLeft") bukaFoto(fotoAktif - 1);
       if (e.key === "ArrowRight") bukaFoto(fotoAktif + 1);
     });
+
+    // Geser (swipe) foto di layar sentuh
+    let lbAwalX = 0;
+
+    lightbox.addEventListener("touchstart", (e) => {
+      lbAwalX = e.touches[0].clientX;
+    }, { passive: true });
+
+    lightbox.addEventListener("touchend", (e) => {
+      const selisih = e.changedTouches[0].clientX - lbAwalX;
+      if (Math.abs(selisih) > 50) bukaFoto(fotoAktif + (selisih < 0 ? 1 : -1));
+    }, { passive: true });
+
+    /* ===== Garis progres scroll & tombol ke atas ===== */
+    const progres = document.getElementById("progres");
+    const keAtas = document.getElementById("ke-atas");
+
+    function aturScroll() {
+      const maks = document.documentElement.scrollHeight - window.innerHeight;
+      const bagian = maks > 0 ? Math.min(window.scrollY / maks, 1) : 0;
+      progres.style.transform = "scaleX(" + bagian + ")";
+      keAtas.classList.toggle("tampil", window.scrollY > 700);
+    }
+
+    window.addEventListener("scroll", aturScroll, { passive: true });
+    window.addEventListener("resize", aturScroll);
+    aturScroll();
+
+    keAtas.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: kurangiGerak ? "auto" : "smooth" });
+    });
+
+    /* ===== Muncul pelan saat di-scroll ===== */
+    if (!kurangiGerak && "IntersectionObserver" in window) {
+      const pengamatMuncul = new IntersectionObserver((daftar) => {
+        daftar.forEach((entri) => {
+          if (!entri.isIntersecting) return;
+          entri.target.classList.add("terlihat");
+          pengamatMuncul.unobserve(entri.target);
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+
+      document.querySelectorAll(
+        ".bagian h2, .kotak-intro, .surat > *, .anggota, .galeri .foto, .kotak-form, .pratinjau, .playlist-teks, .spotify, .prestasi li, .kartu"
+      ).forEach((el) => {
+        const urutanAnak = Array.from(el.parentNode.children).indexOf(el);
+        el.classList.add("reveal");
+        el.style.setProperty("--tunda", (urutanAnak % 3) * 110 + "ms");
+        pengamatMuncul.observe(el);
+      });
+    }
+
+    /* ===== Kartu & surat berayun seperti digantung di paku ===== */
+    function ayunkan(el) {
+      if (kurangiGerak) return;
+      el.classList.remove("ayun");
+      void el.offsetWidth;
+      el.classList.add("ayun");
+      el.addEventListener("animationend", () => el.classList.remove("ayun"), { once: true });
+    }
+
+    document.querySelectorAll(".anggota").forEach((kartu) => {
+      kartu.addEventListener("click", () => ayunkan(kartu));
+    });
+
+    document.getElementById("daftar-surat").addEventListener("click", (e) => {
+      const lembar = e.target.closest(".lembar");
+      if (lembar) ayunkan(lembar);
+    });
+
+    /* ===== Pratinjau surat langsung saat mengetik ===== */
+    const formSurat = document.getElementById("form-surat");
+    const pratinjauNama = document.getElementById("pratinjau-nama");
+    const pratinjauIsi = document.getElementById("pratinjau-isi");
+
+    function perbaruiPratinjau() {
+      const pesan = document.getElementById("surat-pesan").value.trim();
+      const nama = document.getElementById("surat-nama").value.trim();
+      pratinjauIsi.textContent = pesan || "Suratmu akan muncul di sini...";
+      pratinjauIsi.classList.toggle("kosong", !pesan);
+      pratinjauNama.textContent = nama || "Anonim";
+    }
+
+    formSurat.addEventListener("input", perbaruiPratinjau);
+    formSurat.addEventListener("reset", () => setTimeout(perbaruiPratinjau, 0));
+
+    /* ===== Konfeti saat surat terkirim ===== */
+    function konfeti() {
+      if (kurangiGerak) return;
+      const wadah = document.createElement("div");
+      wadah.className = "konfeti";
+      wadah.setAttribute("aria-hidden", "true");
+      const warna = ["#d8341a", "#ff9a7a", "#1f2d34", "#8f1d0c"];
+      for (let i = 0; i < 48; i++) {
+        const kertas = document.createElement("span");
+        kertas.style.left = Math.random() * 100 + "%";
+        kertas.style.background = warna[i % warna.length];
+        kertas.style.animationDelay = Math.random() * 0.4 + "s";
+        kertas.style.setProperty("--geser", Math.round(Math.random() * 200 - 100) + "px");
+        kertas.style.setProperty("--putar", Math.round(Math.random() * 720 - 360) + "deg");
+        kertas.style.setProperty("--durasi", (1.8 + Math.random() * 1.4).toFixed(2) + "s");
+        wadah.appendChild(kertas);
+      }
+      document.body.appendChild(wadah);
+      setTimeout(() => wadah.remove(), 4200);
+    }
+
+    document.addEventListener("surat-terkirim", konfeti);
   </script>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -1388,6 +1683,7 @@
           form.reset();
           hitung.textContent = "0 / 600";
           setStatus("Surat terkirim. Terima kasih!");
+          document.dispatchEvent(new CustomEvent("surat-terkirim"));
         } catch (err) {
           setStatus("Gagal mengirim, coba lagi.", true);
         } finally {
