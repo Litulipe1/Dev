@@ -519,6 +519,154 @@
       color: rgba(31, 45, 52, 0.8);
     }
 
+    /* ===== Kotak Surat ===== */
+    #surat-kelas { background: var(--sage); }
+
+    .kotak-intro {
+      max-width: 56ch;
+      margin-top: 1rem;
+      font-family: var(--font-isi);
+      line-height: 1.7;
+    }
+
+    .kotak-form {
+      max-width: 620px;
+      margin-top: 2rem;
+      padding: 1.75rem;
+      border-radius: 12px;
+      background: var(--putih);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    }
+
+    .kotak-form label {
+      display: block;
+      margin: 0 0 0.35rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--merah);
+    }
+
+    .kotak-form input,
+    .kotak-form textarea {
+      display: block;
+      width: 100%;
+      margin-bottom: 1.1rem;
+      padding: 0.75rem 0.9rem;
+      border: 2px solid rgba(31, 45, 52, 0.2);
+      border-radius: 8px;
+      background: var(--kertas);
+      color: var(--tinta);
+      font-family: var(--font-isi);
+      font-size: 1rem;
+    }
+
+    .kotak-form textarea { resize: vertical; min-height: 140px; }
+
+    .kotak-bawah {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.9rem;
+      color: rgba(31, 45, 52, 0.7);
+    }
+
+    .tombol-kirim {
+      padding: 0.8rem 1.6rem;
+      border: none;
+      border-radius: 999px;
+      background: var(--merah);
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .tombol-kirim:hover:not(:disabled) {
+      background: #e8431f;
+      transform: translateY(-2px);
+    }
+
+    .tombol-kirim:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .kotak-status {
+      min-height: 1.5em;
+      margin-top: 0.9rem;
+      font-weight: 600;
+    }
+
+    .kotak-status.error { color: var(--merah); }
+
+    .kotak-daftar {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2.5rem 2rem;
+      margin-top: 3rem;
+      list-style: none;
+    }
+
+    .lembar {
+      position: relative;
+      padding: 1.75rem 1.5rem 1.25rem;
+      border-radius: 4px;
+      background: #fffdf4;
+      background-image: repeating-linear-gradient(transparent, transparent 33px, rgba(31, 45, 52, 0.08) 33px, rgba(31, 45, 52, 0.08) 34px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    }
+
+    .lembar::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      margin-left: -10px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #ff9a7a, #d8341a 60%, #8f1d0c);
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.35);
+    }
+
+    .lembar:nth-child(4n + 1) { transform: rotate(-1.5deg); }
+    .lembar:nth-child(4n + 2) { transform: rotate(1.2deg); }
+    .lembar:nth-child(4n + 3) { transform: rotate(0.8deg); }
+    .lembar:nth-child(4n) { transform: rotate(-1deg); }
+
+    .lembar-isi {
+      font-family: var(--font-santai);
+      font-size: 1.4rem;
+      font-weight: 600;
+      line-height: 34px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .lembar-dari {
+      margin-top: 1rem;
+      font-family: var(--font-santai);
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+      text-align: right;
+      color: var(--merah);
+    }
+
+    .lembar-waktu {
+      display: block;
+      font-family: var(--font-judul);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: rgba(31, 45, 52, 0.55);
+    }
+
+    .kotak-kosong {
+      margin-top: 2.5rem;
+      font-family: var(--font-isi);
+      font-style: italic;
+    }
+
     /* ===== Kontak ===== */
     #kontak { background: var(--sage); }
 
@@ -698,6 +846,8 @@
       }
 
       .kontak-grid { grid-template-columns: 1fr; }
+      .kotak-daftar { grid-template-columns: 1fr; }
+      .kotak-form { padding: 1.25rem; }
 
       .struktur-grid { gap: 2rem 1rem; }
 
@@ -731,6 +881,7 @@
       .foto,
       .navbar,
       .tombol-spotify,
+      .tombol-kirim,
       .menu a::after { transition: none; }
     }
   </style>
@@ -745,6 +896,7 @@
       <li><a href="#novastra-people">Novastra people</a></li>
       <li><a href="#cerita">Cerita</a></li>
       <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#surat-kelas">Surat</a></li>
       <li><a href="#playlist">Playlist</a></li>
       <li><a href="#prestasi">Prestasi</a></li>
       <li><a href="#kontak">Kontak</a></li>
@@ -841,6 +993,29 @@
         <button type="button" class="foto"><img src="5.jpg" alt="Foto kenangan XMPLB1"></button>
         <button type="button" class="foto"><img src="6.jpg" alt="Foto kenangan XMPLB1"></button>
       </div>
+    </section>
+
+    <!-- Kotak Surat -->
+    <section class="bagian" id="surat-kelas">
+      <h2>Kotak Surat</h2>
+      <p class="kotak-intro">Tulis pesan, kesan, atau kenangan buat XMPLB1. Surat yang sudah terkirim bisa dibaca semua orang, tapi tidak bisa diubah atau dihapus.</p>
+
+      <form class="kotak-form" id="form-surat" autocomplete="off">
+        <label for="surat-nama">Nama (boleh dikosongkan)</label>
+        <input type="text" id="surat-nama" maxlength="30" placeholder="Anonim">
+
+        <label for="surat-pesan">Isi surat</label>
+        <textarea id="surat-pesan" maxlength="600" rows="6" required placeholder="Tulis suratmu di sini..."></textarea>
+
+        <div class="kotak-bawah">
+          <span id="surat-hitung">0 / 600</span>
+          <button type="submit" class="tombol-kirim" id="surat-kirim">Kirim surat</button>
+        </div>
+        <p class="kotak-status" id="surat-status" role="status"></p>
+      </form>
+
+      <ul class="kotak-daftar" id="daftar-surat"></ul>
+      <p class="kotak-kosong" id="surat-kosong" hidden>Belum ada surat. Jadi yang pertama!</p>
     </section>
 
     <!-- Playlist -->
@@ -1109,6 +1284,116 @@
       if (e.key === "ArrowLeft") bukaFoto(fotoAktif - 1);
       if (e.key === "ArrowRight") bukaFoto(fotoAktif + 1);
     });
+  </script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, query, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    /* ===== ISI DENGAN CONFIG FIREBASE KAMU ===== */
+    const firebaseConfig = {
+      apiKey: "ISI_API_KEY",
+      authDomain: "ISI_AUTH_DOMAIN",
+      projectId: "ISI_PROJECT_ID",
+      appId: "ISI_APP_ID"
+    };
+
+    const form = document.getElementById("form-surat");
+    const inputNama = document.getElementById("surat-nama");
+    const inputPesan = document.getElementById("surat-pesan");
+    const hitung = document.getElementById("surat-hitung");
+    const tombolKirim = document.getElementById("surat-kirim");
+    const status = document.getElementById("surat-status");
+    const daftar = document.getElementById("daftar-surat");
+    const kosong = document.getElementById("surat-kosong");
+    const JEDA_MS = 30000;
+
+    function setStatus(teks, error) {
+      status.textContent = teks;
+      status.classList.toggle("error", Boolean(error));
+    }
+
+    inputPesan.addEventListener("input", () => {
+      hitung.textContent = inputPesan.value.length + " / 600";
+    });
+
+    if (firebaseConfig.apiKey.startsWith("ISI_")) {
+      tombolKirim.disabled = true;
+      setStatus("Kotak surat belum diaktifkan.", true);
+    } else {
+      const db = getFirestore(initializeApp(firebaseConfig));
+      const koleksi = collection(db, "surat");
+
+      function tampilkan(docs) {
+        daftar.textContent = "";
+        kosong.hidden = docs.length > 0;
+        docs.forEach((d) => {
+          const data = d.data({ serverTimestamps: "estimate" });
+          const li = document.createElement("li");
+          li.className = "lembar";
+
+          const isi = document.createElement("p");
+          isi.className = "lembar-isi";
+          isi.textContent = data.pesan;
+
+          const dari = document.createElement("p");
+          dari.className = "lembar-dari";
+          dari.textContent = "- " + (data.nama || "Anonim");
+
+          const waktu = document.createElement("time");
+          waktu.className = "lembar-waktu";
+          const tgl = data.waktu ? data.waktu.toDate() : new Date();
+          waktu.dateTime = tgl.toISOString();
+          waktu.textContent = tgl.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+          dari.appendChild(waktu);
+
+          li.append(isi, dari);
+          daftar.appendChild(li);
+        });
+      }
+
+      onSnapshot(
+        query(koleksi, orderBy("waktu", "desc"), limit(50)),
+        (snap) => tampilkan(snap.docs),
+        () => {
+          kosong.hidden = false;
+          kosong.textContent = "Surat belum bisa dimuat. Coba refresh halaman.";
+        }
+      );
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const pesan = inputPesan.value.trim();
+        const nama = inputNama.value.trim();
+
+        if (pesan.length < 3) {
+          setStatus("Suratnya terlalu pendek.", true);
+          return;
+        }
+
+        try {
+          const terakhir = Number(localStorage.getItem("suratTerakhir") || 0);
+          if (Date.now() - terakhir < JEDA_MS) {
+            setStatus("Tunggu sebentar sebelum kirim surat lagi.", true);
+            return;
+          }
+        } catch (err) { /* storage tidak tersedia, lanjut saja */ }
+
+        tombolKirim.disabled = true;
+        setStatus("Mengirim...");
+
+        try {
+          await addDoc(koleksi, { nama: nama, pesan: pesan, waktu: serverTimestamp() });
+          try { localStorage.setItem("suratTerakhir", String(Date.now())); } catch (err) {}
+          form.reset();
+          hitung.textContent = "0 / 600";
+          setStatus("Surat terkirim. Terima kasih!");
+        } catch (err) {
+          setStatus("Gagal mengirim, coba lagi.", true);
+        } finally {
+          tombolKirim.disabled = false;
+        }
+      });
+    }
   </script>
 </body>
   </html>
