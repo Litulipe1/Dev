@@ -8,7 +8,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Literata:wght@400;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Literata:wght@400;600&family=Caveat:wght@600;700&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
 
   <style>
     /* ===== Dasar ===== */
@@ -27,6 +27,7 @@
       --font-judul: "Bricolage Grotesque", "Segoe UI", Arial, sans-serif;
       --font-isi: "Literata", Georgia, serif;
       --font-santai: "Caveat", "Segoe Print", "Comic Sans MS", cursive;
+      --font-bagian: "Fredoka", var(--font-judul);
       --tinggi-nav: 72px;
       --sisi: max(8vw, calc(50vw - 600px));
     }
@@ -53,7 +54,8 @@
 
     .navbar :focus-visible,
     .slider :focus-visible,
-    .lightbox :focus-visible {
+    .lightbox :focus-visible,
+    #playlist :focus-visible {
       outline-color: #fff;
     }
 
@@ -98,6 +100,7 @@
       font-size: 0.95rem;
       font-weight: 600;
       text-decoration: none;
+      white-space: nowrap;
     }
 
     .menu a::after {
@@ -224,10 +227,11 @@
     .bagian { padding: 6rem var(--sisi); }
 
     .bagian h2 {
-      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-      font-weight: 800;
+      font-family: var(--font-bagian);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 600;
       line-height: 1.15;
-      letter-spacing: -0.015em;
+      letter-spacing: 0;
     }
 
     #cerita { background: var(--sage); }
@@ -235,7 +239,7 @@
     #prestasi { background: var(--putih); }
 
     /* ===== Struktur Kelas ===== */
-    #struktur { background: var(--kertas); }
+    #novastra-people { background: var(--kertas); }
 
     .struktur-grid {
       display: grid;
@@ -420,6 +424,59 @@
       transform: rotate(0deg) scale(1.03);
     }
 
+    /* ===== Playlist ===== */
+    #playlist {
+      background: var(--tinta);
+      color: #fff;
+    }
+
+    .playlist-isi {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+      gap: 2.5rem 4rem;
+      align-items: center;
+    }
+
+    .playlist-teks p {
+      max-width: 40ch;
+      margin-top: 1rem;
+      font-family: var(--font-isi);
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .tombol-spotify {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.85rem 1.6rem;
+      border-radius: 999px;
+      background: var(--merah);
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .tombol-spotify:hover {
+      background: #e8431f;
+      transform: translateY(-2px);
+    }
+
+    .playlist-teks .catatan {
+      font-family: var(--font-judul);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .spotify {
+      display: block;
+      width: 100%;
+      height: 352px;
+      border: 0;
+      border-radius: 12px;
+    }
+
     /* ===== Achievement ===== */
     .prestasi {
       max-width: 760px;
@@ -581,6 +638,11 @@
     }
 
     /* ===== Responsif ===== */
+    @media (max-width: 900px) and (min-width: 701px) {
+      .menu { gap: 1.1rem; }
+      .menu a { font-size: 0.85rem; }
+    }
+
     @media (max-width: 700px) {
       :root { --sisi: 6vw; }
 
@@ -624,6 +686,11 @@
 
       .cerita-judul h2 { position: static; }
 
+      .playlist-isi {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
       .kontak-grid { grid-template-columns: 1fr; }
 
       .struktur-grid { gap: 2rem 1rem; }
@@ -656,6 +723,7 @@
       .slide,
       .foto,
       .navbar,
+      .tombol-spotify,
       .menu a::after { transition: none; }
     }
   </style>
@@ -667,9 +735,10 @@
     <button type="button" class="tombol-menu" id="tombol-menu" aria-label="Buka menu" aria-expanded="false" aria-controls="menu">&#9776;</button>
     <ul class="menu" id="menu">
       <li><a href="#home">Home</a></li>
-      <li><a href="#struktur">Struktur</a></li>
+      <li><a href="#novastra-people">Novastra people</a></li>
       <li><a href="#cerita">Cerita</a></li>
       <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#playlist">Playlist</a></li>
       <li><a href="#prestasi">Prestasi</a></li>
       <li><a href="#kontak">Kontak</a></li>
     </ul>
@@ -691,42 +760,30 @@
     </section>
 
     <!-- Struktur Kelas -->
-    <section class="bagian" id="struktur">
-      <h2>Struktur Kelas</h2>
+    <section class="bagian" id="novastra-people">
+      <h2>Novastra people</h2>
       <ul class="struktur-grid">
         <li class="anggota">
           <div class="anggota-foto"><img src="struktur-ketua.jpg" alt="Foto Ketua Kelas" onerror="this.remove()"></div>
-          <h3>Ketua Kelas</h3>
+          <h3>Absen </h3>
           <p>Nama Lengkap</p>
         </li>
 
         <li class="anggota">
-          <div class="anggota-foto"><img src="struktur-wakil.jpg" alt="Foto Wakil Ketua" onerror="this.remove()"></div>
-          <h3>Wakil Ketua</h3>
+          <div class="anggota-foto"><img src="struktur-ketua.jpg" alt="Foto Ketua Kelas" onerror="this.remove()"></div>
+          <h3>Absen </h3>
           <p>Nama Lengkap</p>
         </li>
 
         <li class="anggota">
-          <div class="anggota-foto"><img src="struktur-bendahara.jpg" alt="Foto Bendahara" onerror="this.remove()"></div>
-          <h3>Bendahara</h3>
+          <div class="anggota-foto"><img src="struktur-ketua.jpg" alt="Foto Ketua Kelas" onerror="this.remove()"></div>
+          <h3>Absen </h3>
           <p>Nama Lengkap</p>
         </li>
-
+        
         <li class="anggota">
-          <div class="anggota-foto"><img src="struktur-sekretaris.jpg" alt="Foto Sekretaris" onerror="this.remove()"></div>
-          <h3>Sekretaris</h3>
-          <p>Nama Lengkap</p>
-        </li>
-
-        <li class="anggota">
-          <div class="anggota-foto"><img src="struktur-peralatan.jpg" alt="Foto Seksi Peralatan" onerror="this.remove()"></div>
-          <h3>Seksi Peralatan</h3>
-          <p>Nama Lengkap</p>
-        </li>
-
-        <li class="anggota">
-          <div class="anggota-foto"><img src="struktur-keagamaan.jpg" alt="Foto Seksi Keagamaan" onerror="this.remove()"></div>
-          <h3>Seksi Keagamaan</h3>
+          <div class="anggota-foto"><img src="struktur-ketua.jpg" alt="Foto Ketua Kelas" onerror="this.remove()"></div>
+          <h3>Absen </h3>
           <p>Nama Lengkap</p>
         </li>
       </ul>
@@ -773,6 +830,19 @@
         <button type="button" class="foto"><img src="1.jpeg" alt="Foto kenangan XMPLB1"></button>
         <button type="button" class="foto"><img src="2.jpeg" alt="Foto kenangan XMPLB1"></button>
         <button type="button" class="foto"><img src="3.jpeg" alt="Foto kenangan XMPLB1"></button>
+      </div>
+    </section>
+
+    <!-- Playlist -->
+    <section class="bagian" id="playlist" data-playlist="https://open.spotify.com/playlist/7eHP2Gn5bVGrcRxoeVzI9T?si=301798d732b14aea&pt=1587bcdc7ad80e418bac9d4d2d9312ad">
+      <div class="playlist-isi">
+        <div class="playlist-teks">
+          <h2>Playlist Kelas</h2>
+          <p>Lagu-lagu yang menemani hari-hari Novastra people. </p>
+          <a class="tombol-spotify" id="spotify-link" href="https://open.spotify.com" target="_blank" rel="noopener">Buka di Spotify &rarr;</a>
+        </div>
+
+        <iframe class="spotify" id="spotify-embed" title="Playlist Spotify XMPLB1" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
       </div>
     </section>
 
@@ -960,6 +1030,17 @@
     }, { passive: true });
 
     mulai();
+
+    /* ===== Playlist Spotify ===== */
+    const bagianPlaylist = document.getElementById("playlist");
+    const dataPlaylist = bagianPlaylist.dataset.playlist.trim();
+    const cocokPlaylist = dataPlaylist.match(/playlist\/([A-Za-z0-9]+)/);
+    const idPlaylist = cocokPlaylist ? cocokPlaylist[1] : dataPlaylist;
+
+    document.getElementById("spotify-embed").src =
+      "https://open.spotify.com/embed/playlist/" + idPlaylist + "?utm_source=generator&theme=0";
+    document.getElementById("spotify-link").href =
+      "https://open.spotify.com/playlist/" + idPlaylist;
 
     /* ===== Lightbox ===== */
     const lightbox = document.getElementById("lightbox");
