@@ -158,11 +158,12 @@
 
     .slide {
       position: absolute;
-      inset: 0;
+      inset: -80px 0 0 0;
       background-size: cover;
       background-position: center;
       filter: blur(3px);
       transform: scale(1.05);
+      translate: 0 calc(var(--p, 0) * 70px);
       opacity: 0;
       transition: opacity 1s ease;
     }
@@ -176,6 +177,8 @@
       z-index: 2;
       max-width: 680px;
       transform: translateY(-50%);
+      translate: 0 calc(var(--p, 0) * -50px);
+      opacity: calc(1 - var(--p, 0) * 1.1);
       text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
     }
 
@@ -1494,6 +1497,11 @@
       const bagian = maks > 0 ? Math.min(window.scrollY / maks, 1) : 0;
       progres.style.transform = "scaleX(" + bagian + ")";
       keAtas.classList.toggle("tampil", window.scrollY > 700);
+
+      if (!kurangiGerak) {
+        const p = Math.min(Math.max(window.scrollY / slider.offsetHeight, 0), 1);
+        slider.style.setProperty("--p", p.toFixed(3));
+      }
     }
 
     window.addEventListener("scroll", aturScroll, { passive: true });
@@ -1508,11 +1516,13 @@
     if (!kurangiGerak && "IntersectionObserver" in window) {
       const pengamatMuncul = new IntersectionObserver((daftar) => {
         daftar.forEach((entri) => {
-          if (!entri.isIntersecting) return;
-          entri.target.classList.add("terlihat");
-          pengamatMuncul.unobserve(entri.target);
+          if (entri.isIntersecting && entri.intersectionRatio >= 0.12) {
+            entri.target.classList.add("terlihat");
+          } else if (entri.intersectionRatio === 0) {
+            entri.target.classList.remove("terlihat");
+          }
         });
-      }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+      }, { threshold: [0, 0.12], rootMargin: "0px 0px -8% 0px" });
 
       document.querySelectorAll(
         ".bagian h2, .kotak-intro, .surat > *, .anggota, .galeri .foto, .kotak-form, .pratinjau, .playlist-teks, .spotify, .prestasi li, .kartu"
