@@ -157,6 +157,8 @@
       inset: 0;
       background-size: cover;
       background-position: center;
+      filter: blur(3px);
+      transform: scale(1.05);
       opacity: 0;
       transition: opacity 1s ease;
     }
@@ -192,6 +194,22 @@
     @keyframes masuk {
       from { opacity: 0; transform: translateY(14px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* tiap huruf loncat bergantian */
+    .kata {
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .huruf {
+      display: inline-block;
+      animation: loncat 6s calc(1s + var(--i) * 0.08s) ease-in-out infinite;
+    }
+
+    @keyframes loncat {
+      0%, 10%, 100% { transform: translateY(0); }
+      5%            { transform: translateY(-9px); }
     }
 
     .titik-wadah {
@@ -706,6 +724,7 @@
 
       .hero-teks h1,
       .hero-teks p,
+      .huruf,
       .lightbox[open] img { animation: none; }
 
       .slide,
@@ -952,6 +971,28 @@
 
     document.querySelectorAll("main section[id]").forEach((b) => pengamat.observe(b));
 
+    /* ===== Hero: pecah teks jadi huruf (buat animasi loncat) ===== */
+    document.querySelectorAll(".hero-teks h1, .hero-teks p").forEach((el) => {
+      const teks = el.textContent.trim();
+      el.setAttribute("aria-label", teks);
+      el.textContent = "";
+      let n = 0;
+      teks.split(/\s+/).forEach((kata, k, semua) => {
+        const wadah = document.createElement("span");
+        wadah.className = "kata";
+        wadah.setAttribute("aria-hidden", "true");
+        Array.from(kata).forEach((h) => {
+          const span = document.createElement("span");
+          span.className = "huruf";
+          span.style.setProperty("--i", n++);
+          span.textContent = h;
+          wadah.appendChild(span);
+        });
+        el.appendChild(wadah);
+        if (k < semua.length - 1) el.appendChild(document.createTextNode(" "));
+      });
+    });
+
     /* ===== Slider ===== */
     const slider = document.getElementById("home");
     const slides = document.querySelectorAll(".slide");
@@ -1070,4 +1111,4 @@
     });
   </script>
 </body>
-</html>
+  </html>
