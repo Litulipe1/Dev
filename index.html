@@ -4,6 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#1f2d34">
+  <script>
+    try {
+      var t = localStorage.getItem("tema");
+      if (!t && matchMedia("(prefers-color-scheme: dark)").matches) t = "dark";
+      if (t === "dark") document.documentElement.dataset.tema = "dark";
+    } catch (e) {}
+    </script>
   <meta name="description" content="Kenangan kelas XMPLB1 dalam satu tempat.">
   <title>XMPLB1</title>
   <link rel="icon" type="image/png" href="logo.png">
@@ -1500,6 +1507,72 @@
       .ayun,
       .foto:hover { animation: none; }
     }
+  
+    /* ===== Kartu balik ===== */
+    .anggota { perspective: 900px; cursor: pointer; }
+    .anggota:focus-visible { outline-offset: 6px; }
+    .anggota-dalam { display: grid; transform-style: preserve-3d; transition: transform 0.6s ease; }
+    .anggota.balik .anggota-dalam { transform: rotateY(180deg); }
+    .sisi { grid-area: 1 / 1; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+    .belakang {
+      display: flex; flex-direction: column; justify-content: center; gap: 0.8rem;
+      padding: 1.2rem 1rem; border-radius: 12px; background: var(--tinta); color: #fff;
+      text-align: center; transform: rotateY(180deg); box-shadow: 0 6px 18px rgba(0,0,0,0.14);
+    }
+    .belakang .motto { font-size: 1.5rem; line-height: 1.2; color: #fff; }
+    .belakang .hobi { font-size: 1.2rem; color: #ff9a7a; }
+
+    /* ===== Hitungan hari ===== */
+    .hitung { padding: 2.5rem var(--sisi); background: var(--merah); color: #fff; text-align: center; }
+    .hitung-besar { font-size: clamp(1.3rem, 3.5vw, 2rem); font-weight: 700; }
+    .hitung-besar strong { font-family: var(--font-bagian); font-size: 1.5em; font-weight: 600; }
+    .hitung-acara { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem; margin-top: 1rem; list-style: none; }
+    .hitung-acara li { padding: 0.4rem 1rem; border-radius: 999px; background: rgba(255,255,255,0.2); font-weight: 600; }
+
+    /* ===== Tombol tema ===== */
+    .tombol-tema { width: 44px; height: 44px; border: none; background: transparent; color: #fff; font-size: 1.3rem; cursor: pointer; }
+    @media (max-width: 860px) { .tombol-tema { margin-left: auto; } }
+
+    /* ===== Mode gelap ===== */
+    :root[data-tema="dark"] { color-scheme: dark; --tinta: #e8eeea; --kertas: #12191d; --sage: #182227; --putih: #1b262c; --merah: #ef4a2e; }
+    :root[data-tema="dark"] :is(.slider, #playlist, .jab, .kaki, .ke-atas, .belakang) { background: #0c1215; }
+    :root[data-tema="dark"] :is(.kotak-form input, .kotak-form textarea, .kotak-form select, .hasil-lagu, .lagu-terpilih, .prestasi li, .surat .slogan) { border-color: rgba(255,255,255,0.22); }
+    :root[data-tema="dark"] :is(.prestasi p, .kotak-bawah, .kotak-hint, .pratinjau-label, .lagu-info span, .lembar-waktu) { color: rgba(255,255,255,0.65); }
+    :root[data-tema="dark"] .lembar { background-color: #222d32; }
+    :root[data-tema="dark"] .lembar-lagu { background: rgba(255,255,255,0.08); }
+    :root[data-tema="dark"] .titik-geser button { border-color: #e8eeea; }
+    @media (prefers-reduced-motion: reduce) { .anggota-dalam { transition: none; } }
+
+    /* ===== Ulang tahun ===== */
+    .ultah-hari { margin-bottom: 1.2rem; padding: 0.8rem 1.2rem; border-radius: 12px; background: #fff; color: #d8341a; font-size: clamp(1.1rem, 3vw, 1.5rem); font-weight: 800; }
+    .ultah-next { margin-top: 1rem; font-size: 0.95rem; opacity: 0.9; }
+
+    /* ===== Pengacak nama ===== */
+    #pengacak { background: var(--kertas); }
+    .pengacak-intro { max-width: 56ch; margin-top: 1rem; font-family: var(--font-isi); line-height: 1.7; }
+    .pengacak-area { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; margin-top: 2rem; align-items: start; }
+    .pengacak-area .kotak-form textarea { min-height: 220px; }
+    .hasil-acak {
+      display: flex; align-items: center; justify-content: center; min-height: 140px; margin: 0.5rem 0 1rem;
+      padding: 1rem; border-radius: 12px; background: var(--kertas); text-align: center;
+      font-family: var(--font-santai); font-size: clamp(2.2rem, 7vw, 3.4rem); font-weight: 700; line-height: 1.1;
+      color: var(--merah); overflow-wrap: anywhere;
+    }
+    .hasil-acak.kosong { font-size: 1.3rem; color: rgba(31, 45, 52, 0.55); }
+    .hasil-acak.muter { opacity: 0.7; }
+    .pengacak-aksi { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem 1rem; }
+    .tombol-pelan { padding: 0.8rem 1.4rem; border: 2px solid var(--tinta); border-radius: 999px; background: transparent; color: var(--tinta); font-weight: 700; cursor: pointer; }
+    .pengacak-sisa { margin-top: 0.9rem; font-size: 0.9rem; color: rgba(31, 45, 52, 0.7); }
+    .kelompok-bagi { grid-column: 1 / -1; }
+    .kelompok-baris { display: flex; flex-wrap: wrap; align-items: end; gap: 1rem; }
+    .kelompok-baris label { margin-bottom: 0.35rem; }
+    .kelompok-baris input { width: 120px; margin-bottom: 0; }
+    .kelompok-daftar { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-top: 1.5rem; list-style: none; }
+    .kelompok { padding: 1rem 1.1rem; border-radius: 12px; background: var(--kertas); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); }
+    .kelompok h3 { margin-bottom: 0.4rem; font-family: var(--font-santai); font-size: 1.6rem; color: var(--merah); line-height: 1.1; }
+    .kelompok ul { padding-left: 1.1rem; font-family: var(--font-isi); }
+    :root[data-tema="dark"] .hasil-acak.kosong, :root[data-tema="dark"] .pengacak-sisa { color: rgba(255, 255, 255, 0.65); }
+    @media (max-width: 860px) { .pengacak-area { grid-template-columns: 1fr; } }
   </style>
 </head>
 
@@ -1507,11 +1580,13 @@
 
   <nav class="navbar" id="navbar">
     <a href="index.html" class="logo">XMPLB1</a>
+    <button type="button" class="tombol-tema" id="tombol-tema" aria-label="Ganti ke mode gelap">🌙</button>
     <button type="button" class="tombol-menu" id="tombol-menu" aria-label="Buka menu" aria-expanded="false" aria-controls="menu">&#9776;</button>
     <ul class="menu" id="menu">
       <li><a href="#home">Home</a></li>
       <li><a href="#anggota-kelas">Anggota Kelas</a></li>
       <li><a href="#struktur-kelas">Struktur</a></li>
+      <li><a href="#pengacak">Pengacak</a></li>
       <li><a href="#album">Album</a></li>
       <li><a href="#surat-kelas">Surat</a></li>
       <li><a href="#playlist">Playlist</a></li>
@@ -1536,32 +1611,71 @@
       <div class="titik-wadah" id="titik"></div>
     </section>
 
+    <section class="hitung" aria-label="Hitungan hari">
+      <p class="ultah-hari" id="ultah-hari" hidden></p>
+      <p class="hitung-besar">Udah <strong id="hari-bersama">0</strong> hari kita sekelas</p>
+      <ul class="hitung-acara" id="hitung-acara"></ul>
+      <p class="ultah-next" id="ultah-next" hidden></p>
+    </section>
+
     <!-- Struktur Kelas -->
     <section class="bagian" id="anggota-kelas">
       <h2>Anggota Kelas</h2>
       <ul class="struktur-grid">
-        <li class="anggota">
-          <div class="anggota-foto"><img src="struktur-ketua.jpg" alt="Foto Ketua Kelas" onerror="this.remove()"></div>
-          <h3>Absen </h3>
-          <p>Nama Lengkap</p>
+        <li class="anggota" tabindex="0" role="button" aria-pressed="false">
+          <div class="anggota-dalam">
+            <div class="sisi depan">
+              <div class="anggota-foto"><img src="struktur-ketua.jpg" alt="Foto Ketua Kelas" onerror="this.remove()"></div>
+              <h3>Absen </h3>
+              <p>Nama Lengkap</p>
+            </div>
+            <div class="sisi belakang">
+              <p class="motto">"Motto atau kesan singkat"</p>
+              <p class="hobi">Hobi: ...</p>
+            </div>
+          </div>
         </li>
 
-        <li class="anggota">
-          <div class="anggota-foto"><img src="struktur-ketua.jpg" alt="Foto Ketua Kelas" onerror="this.remove()"></div>
-          <h3>Absen </h3>
-          <p>Nama Lengkap</p>
+        <li class="anggota" tabindex="0" role="button" aria-pressed="false">
+          <div class="anggota-dalam">
+            <div class="sisi depan">
+              <div class="anggota-foto"><img src="struktur-ketua.jpg" alt="Foto Ketua Kelas" onerror="this.remove()"></div>
+              <h3>Absen </h3>
+              <p>Nama Lengkap</p>
+            </div>
+            <div class="sisi belakang">
+              <p class="motto">"Motto atau kesan singkat"</p>
+              <p class="hobi">Hobi: ...</p>
+            </div>
+          </div>
         </li>
 
-        <li class="anggota">
-          <div class="anggota-foto"><img src="struktur-ketua.jpg" alt="Foto Ketua Kelas" onerror="this.remove()"></div>
-          <h3>Absen </h3>
-          <p>Nama Lengkap</p>
+        <li class="anggota" tabindex="0" role="button" aria-pressed="false">
+          <div class="anggota-dalam">
+            <div class="sisi depan">
+              <div class="anggota-foto"><img src="struktur-ketua.jpg" alt="Foto Ketua Kelas" onerror="this.remove()"></div>
+              <h3>Absen </h3>
+              <p>Nama Lengkap</p>
+            </div>
+            <div class="sisi belakang">
+              <p class="motto">"Motto atau kesan singkat"</p>
+              <p class="hobi">Hobi: ...</p>
+            </div>
+          </div>
         </li>
         
-        <li class="anggota">
-          <div class="anggota-foto"><img src="struktur-ketua.jpg" alt="Foto Ketua Kelas" onerror="this.remove()"></div>
-          <h3>Absen </h3>
-          <p>Nama Lengkap</p>
+        <li class="anggota" tabindex="0" role="button" aria-pressed="false">
+          <div class="anggota-dalam">
+            <div class="sisi depan">
+              <div class="anggota-foto"><img src="struktur-ketua.jpg" alt="Foto Ketua Kelas" onerror="this.remove()"></div>
+              <h3>Absen </h3>
+              <p>Nama Lengkap</p>
+            </div>
+            <div class="sisi belakang">
+              <p class="motto">"Motto atau kesan singkat"</p>
+              <p class="hobi">Hobi: ...</p>
+            </div>
+          </div>
         </li>
       </ul>
     </section>
@@ -1590,10 +1704,46 @@
       </div>
     </section>
 
-    <!-- Gallery -->
+    <!-- Pengacak nama -->
+    <section class="bagian" id="pengacak">
+      <h2>Pengacak Nama &#127922;</h2>
+      <p class="pengacak-intro">Buat nentuin siapa yang maju presentasi atau bagi kelompok otomatis. Daftar nama bisa diedit, dan tersimpan di browser kamu sendiri.</p>
+
+      <div class="pengacak-area">
+        <div class="kotak-form">
+          <label for="acak-nama">Daftar nama (satu nama per baris)</label>
+          <textarea id="acak-nama" rows="10" placeholder="Budi&#10;Sari&#10;Andi"></textarea>
+          <p class="pengacak-sisa" id="acak-jumlah">0 nama</p>
+        </div>
+
+        <div class="kotak-form">
+          <label>Giliran maju</label>
+          <p class="hasil-acak kosong" id="acak-hasil" aria-live="polite">Tekan tombol di bawah</p>
+          <div class="pengacak-aksi">
+            <button type="button" class="tombol-kirim" id="acak-satu">&#127922; Acak satu orang</button>
+            <button type="button" class="tombol-pelan" id="acak-reset">Mulai ulang giliran</button>
+          </div>
+          <p class="pengacak-sisa" id="acak-sisa"></p>
+        </div>
+
+        <div class="kotak-form kelompok-bagi">
+          <label for="acak-jml-kelompok">Bagi kelompok</label>
+          <div class="kelompok-baris">
+            <div>
+              <input type="number" id="acak-jml-kelompok" min="1" value="4" inputmode="numeric" aria-label="Jumlah kelompok">
+            </div>
+            <button type="button" class="tombol-kirim" id="acak-bagi">Bagi sekarang</button>
+          </div>
+          <p class="kotak-status" id="acak-status" role="status"></p>
+          <ul class="kelompok-daftar" id="kelompok-daftar"></ul>
+        </div>
+      </div>
+    </section>
+
+        <!-- Gallery -->
     <section class="bagian" id="album">
       <h2>Album</h2>
-      <p1>Album kelas Novastra📸</p1>
+      <p>Album kelas Novastra📸</p>
       <div class="galeri">
         <button type="button" class="foto"><img src="1.jpeg" alt="Foto kenangan XMPLB1"></button>
         <button type="button" class="foto"><img src="2.jpeg" alt="Foto kenangan XMPLB1"></button>
@@ -2258,6 +2408,240 @@
     }
 
     document.addEventListener("surat-terkirim", konfeti);
+  
+    /* ===== Kartu balik ===== */
+    document.querySelectorAll(".anggota").forEach((kartu) => {
+      const balik = () => {
+        const nyala = kartu.classList.toggle("balik");
+        kartu.setAttribute("aria-pressed", String(nyala));
+      };
+      kartu.addEventListener("click", balik);
+      kartu.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); balik(); }
+      });
+    });
+
+    /* ===== Hitungan hari ===== */
+    // GANTI tanggalnya (bulan dihitung dari 0: Januari = 0, Desember = 11)
+    const MULAI = new Date(2026, 6, 22); // 22 Juli 2026, hari pertama bersama
+    const ACARA = [
+      { nama: "Classmeeting", tgl: new Date(2026, 11, 18) },
+      { nama: "Naik kelas XI", tgl: new Date(2027, 5, 28) },
+      { nama: "Kelulusan", tgl: new Date(2029, 5, 1) }
+    ];
+
+    function selisihHari(a, b) { return Math.round((b - a) / 86400000); }
+
+    function perbaruiHitung() {
+      const hariIni = new Date();
+      hariIni.setHours(0, 0, 0, 0);
+      document.getElementById("hari-bersama").textContent =
+        Math.max(selisihHari(MULAI, hariIni), 0).toLocaleString("id-ID");
+      const daftarAcara = document.getElementById("hitung-acara");
+      daftarAcara.textContent = "";
+      ACARA.forEach((a) => {
+        const sisa = selisihHari(hariIni, a.tgl);
+        if (sisa < 0) return;
+        const li = document.createElement("li");
+        li.textContent = sisa === 0 ? a.nama + ": hari ini! 🎉" : a.nama + ": " + sisa + " hari lagi";
+        daftarAcara.appendChild(li);
+      });
+    }
+    perbaruiHitung();
+    setInterval(perbaruiHitung, 60000);
+
+    /* ===== Mode gelap ===== */
+    const tombolTema = document.getElementById("tombol-tema");
+
+    function setTema(gelap, simpan) {
+      document.documentElement.dataset.tema = gelap ? "dark" : "light";
+      tombolTema.textContent = gelap ? "☀️" : "🌙";
+      tombolTema.setAttribute("aria-label", gelap ? "Ganti ke mode terang" : "Ganti ke mode gelap");
+      if (simpan) { try { localStorage.setItem("tema", gelap ? "dark" : "light"); } catch (e) {} }
+    }
+    setTema(document.documentElement.dataset.tema === "dark", false);
+    tombolTema.addEventListener("click", () => {
+      setTema(document.documentElement.dataset.tema !== "dark", true);
+    });
+
+    /* ===== Ulang tahun otomatis ===== */
+    // Isi tanggal lahir anggota (cukup tanggal & bulan, TANPA tahun). Bulan 1-12.
+    const ULTAH = [
+      // { nama: "Budi", tgl: 11, bln: 10 },
+    ];
+
+    function cekUltah() {
+      const el = document.getElementById("ultah-hari");
+      const next = document.getElementById("ultah-next");
+      if (!ULTAH.length) return;
+      const now = new Date();
+      const hariIni = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+      const yangUlangTahun = ULTAH.filter((u) => u.tgl === now.getDate() && u.bln === now.getMonth() + 1);
+      if (yangUlangTahun.length) {
+        el.textContent = "\uD83C\uDF82 Hari ini ulang tahun " + yangUlangTahun.map((u) => u.nama).join(" & ") + "!";
+        el.hidden = false;
+        let sudah = false;
+        const kunci = "ultahKonfeti" + hariIni.toDateString();
+        try { sudah = sessionStorage.getItem(kunci) === "1"; sessionStorage.setItem(kunci, "1"); } catch (e) {}
+        if (!sudah) konfeti();
+      } else {
+        el.hidden = true;
+      }
+
+      // ulang tahun terdekat berikutnya
+      let terdekat = null;
+      ULTAH.forEach((u) => {
+        let t = new Date(now.getFullYear(), u.bln - 1, u.tgl);
+        if (t <= hariIni) t = new Date(now.getFullYear() + 1, u.bln - 1, u.tgl);
+        const sisa = Math.round((t - hariIni) / 86400000);
+        if (!terdekat || sisa < terdekat.sisa) terdekat = { nama: u.nama, sisa: sisa, tgl: t };
+      });
+      if (terdekat) {
+        next.textContent = "Ulang tahun berikutnya: " + terdekat.nama + " (" +
+          terdekat.tgl.toLocaleDateString("id-ID", { day: "numeric", month: "long" }) + ", " + terdekat.sisa + " hari lagi)";
+        next.hidden = false;
+      }
+    }
+    cekUltah();
+    setInterval(cekUltah, 60000);
+
+    /* ===== Pengacak nama ===== */
+    // Daftar awal (opsional). Kalau mau langsung terisi buat semua orang, tulis di sini.
+    const NAMA_KELAS = [
+      // "Budi", "Sari",
+    ];
+
+    (function pengacakNama() {
+      const taNama = document.getElementById("acak-nama");
+      const jumlah = document.getElementById("acak-jumlah");
+      const hasil = document.getElementById("acak-hasil");
+      const sisaEl = document.getElementById("acak-sisa");
+      const tombolSatu = document.getElementById("acak-satu");
+      const tombolReset = document.getElementById("acak-reset");
+      const inputKelompok = document.getElementById("acak-jml-kelompok");
+      const tombolBagi = document.getElementById("acak-bagi");
+      const statusEl = document.getElementById("acak-status");
+      const daftarKelompok = document.getElementById("kelompok-daftar");
+      const KUNCI = "pengacakNama";
+      let sisa = null;
+
+      try {
+        const simpan = localStorage.getItem(KUNCI);
+        taNama.value = simpan !== null ? simpan : NAMA_KELAS.join("\n");
+      } catch (e) { taNama.value = NAMA_KELAS.join("\n"); }
+
+      function ambilNama() {
+        return Array.from(new Set(taNama.value.split("\n").map((n) => n.trim()).filter(Boolean)));
+      }
+
+      function kocokNama(daftar) {
+        for (let k = daftar.length - 1; k > 0; k--) {
+          const m = Math.floor(Math.random() * (k + 1));
+          [daftar[k], daftar[m]] = [daftar[m], daftar[k]];
+        }
+        return daftar;
+      }
+
+      function perbaruiJumlah() {
+        jumlah.textContent = ambilNama().length + " nama";
+      }
+
+      taNama.addEventListener("input", () => {
+        perbaruiJumlah();
+        sisa = null;
+        sisaEl.textContent = "";
+        try { localStorage.setItem(KUNCI, taNama.value); } catch (e) {}
+      });
+      perbaruiJumlah();
+
+      function mulaiUlang() {
+        sisa = null;
+        sisaEl.textContent = "";
+        hasil.textContent = "Tekan tombol di bawah";
+        hasil.classList.add("kosong");
+      }
+      tombolReset.addEventListener("click", mulaiUlang);
+
+      tombolSatu.addEventListener("click", () => {
+        const nama = ambilNama();
+        if (!nama.length) {
+          hasil.textContent = "Isi daftar nama dulu ya";
+          hasil.classList.add("kosong");
+          return;
+        }
+
+        let putaranBaru = false;
+        if (!sisa || !sisa.length) {
+          sisa = kocokNama(nama.slice());
+          putaranBaru = true;
+        }
+        const terpilih = sisa.pop();
+
+        function selesai() {
+          hasil.textContent = terpilih;
+          hasil.classList.remove("kosong", "muter");
+          sisaEl.textContent = "Sisa giliran: " + sisa.length + " dari " + nama.length +
+            (putaranBaru && nama.length > 1 ? " (putaran baru)" : "") +
+            (sisa.length === 0 ? ". Semua udah kebagian!" : "");
+          tombolSatu.disabled = false;
+          konfeti();
+        }
+
+        tombolSatu.disabled = true;
+        if (kurangiGerak) { selesai(); return; }
+
+        hasil.classList.remove("kosong");
+        hasil.classList.add("muter");
+        let jeda = 60;
+        let langkah = 0;
+        const total = 18;
+        (function putar() {
+          if (langkah >= total) { selesai(); return; }
+          hasil.textContent = nama[Math.floor(Math.random() * nama.length)];
+          langkah++;
+          jeda += 12;
+          setTimeout(putar, jeda);
+        })();
+      });
+
+      tombolBagi.addEventListener("click", () => {
+        const nama = ambilNama();
+        const n = parseInt(inputKelompok.value, 10);
+        daftarKelompok.textContent = "";
+        statusEl.classList.remove("error");
+
+        if (!nama.length) {
+          statusEl.textContent = "Isi daftar nama dulu ya.";
+          statusEl.classList.add("error");
+          return;
+        }
+        if (!n || n < 1 || n > nama.length) {
+          statusEl.textContent = "Jumlah kelompok harus antara 1 sampai " + nama.length + ".";
+          statusEl.classList.add("error");
+          return;
+        }
+
+        const grup = Array.from({ length: n }, () => []);
+        kocokNama(nama.slice()).forEach((orang, i) => grup[i % n].push(orang));
+
+        grup.forEach((anggota, i) => {
+          const li = document.createElement("li");
+          li.className = "kelompok";
+          const judul = document.createElement("h3");
+          judul.textContent = "Kelompok " + (i + 1) + " (" + anggota.length + ")";
+          const ul = document.createElement("ul");
+          anggota.forEach((orang) => {
+            const item = document.createElement("li");
+            item.textContent = orang;
+            ul.appendChild(item);
+          });
+          li.append(judul, ul);
+          daftarKelompok.appendChild(li);
+        });
+        statusEl.textContent = nama.length + " orang dibagi ke " + n + " kelompok.";
+      });
+    })();
   </script>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
