@@ -1573,6 +1573,30 @@
     .kelompok ul { padding-left: 1.1rem; font-family: var(--font-isi); }
     :root[data-tema="dark"] .hasil-acak.kosong, :root[data-tema="dark"] .pengacak-sisa { color: rgba(255, 255, 255, 0.65); }
     @media (max-width: 860px) { .pengacak-area { grid-template-columns: 1fr; } }
+
+    /* ===== Momen bulan ini ===== */
+    .sub-judul { margin-top: 2rem; font-family: var(--font-bagian); font-size: 1.5rem; font-weight: 600; }
+    .galeri-judul { margin-top: 3rem; }
+    .momen-kartu { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 2rem; align-items: center; margin-top: 1.2rem; padding: 1.2rem; border-radius: 12px; background: var(--putih); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1); }
+    .momen-foto-wadah { overflow: hidden; border-radius: 10px; background: var(--sage); }
+    .momen-foto-wadah img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+    .momen-foto-wadah:has(img[hidden]) { display: none; }
+    .momen-kartu:has(img[hidden]) { grid-template-columns: 1fr; }
+    .momen-tanggal { display: block; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--merah); }
+    .momen-teks h4 { margin: 0.3rem 0 0.6rem; font-family: var(--font-santai); font-size: 2.2rem; line-height: 1.1; }
+    .momen-teks p { font-family: var(--font-isi); line-height: 1.8; white-space: pre-line; overflow-wrap: anywhere; }
+    .momen-nav { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 1rem; font-size: 0.9rem; font-weight: 600; }
+    .momen-nav .tombol-pelan { padding: 0.6rem 1.1rem; }
+    .tombol-pelan:disabled { opacity: 0.4; cursor: not-allowed; }
+    .momen-form { margin-top: 1.5rem; max-width: 620px; }
+    .momen-form textarea { min-height: 90px; }
+    .momen-komentar { display: grid; gap: 0.8rem; margin-top: 1.2rem; max-width: 620px; list-style: none; }
+    .komentar { padding: 0.9rem 1.1rem; border-radius: 10px; background: var(--putih); box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07); }
+    .komentar p { font-family: var(--font-isi); white-space: pre-wrap; overflow-wrap: anywhere; }
+    .komentar-dari { margin-top: 0.3rem; font-family: var(--font-santai); font-size: 1.3rem; font-weight: 700; color: var(--merah); text-align: right; line-height: 1.2; }
+    .komentar-dari time { display: block; font-family: var(--font-judul); font-size: 0.72rem; font-weight: 500; color: rgba(31, 45, 52, 0.55); }
+    :root[data-tema="dark"] .komentar-dari time { color: rgba(255, 255, 255, 0.55); }
+    @media (max-width: 760px) { .momen-kartu { grid-template-columns: 1fr; gap: 1.2rem; } }
   </style>
 </head>
 
@@ -1624,7 +1648,7 @@
       <ul class="struktur-grid">
         <li class="anggota" tabindex="0" role="button" aria-pressed="false">
           <div class="anggota-dalam">
-            <div class="sisi depan">
+            <div class="sisi">
               <div class="anggota-foto"><img src="struktur-ketua.jpg" alt="Foto Ketua Kelas" onerror="this.remove()"></div>
               <h3>Absen </h3>
               <p>Nama Lengkap</p>
@@ -1638,7 +1662,7 @@
 
         <li class="anggota" tabindex="0" role="button" aria-pressed="false">
           <div class="anggota-dalam">
-            <div class="sisi depan">
+            <div class="sisi">
               <div class="anggota-foto"><img src="struktur-ketua.jpg" alt="Foto Ketua Kelas" onerror="this.remove()"></div>
               <h3>Absen </h3>
               <p>Nama Lengkap</p>
@@ -1652,7 +1676,7 @@
 
         <li class="anggota" tabindex="0" role="button" aria-pressed="false">
           <div class="anggota-dalam">
-            <div class="sisi depan">
+            <div class="sisi">
               <div class="anggota-foto"><img src="struktur-ketua.jpg" alt="Foto Ketua Kelas" onerror="this.remove()"></div>
               <h3>Absen </h3>
               <p>Nama Lengkap</p>
@@ -1666,7 +1690,7 @@
         
         <li class="anggota" tabindex="0" role="button" aria-pressed="false">
           <div class="anggota-dalam">
-            <div class="sisi depan">
+            <div class="sisi">
               <div class="anggota-foto"><img src="struktur-ketua.jpg" alt="Foto Ketua Kelas" onerror="this.remove()"></div>
               <h3>Absen </h3>
               <p>Nama Lengkap</p>
@@ -1744,6 +1768,39 @@
     <section class="bagian" id="album">
       <h2>Album</h2>
       <p>Album kelas Novastra📸</p>
+      <div class="momen" id="momen" hidden>
+        <h3 class="sub-judul">Momen Bulan Ini</h3>
+        <article class="momen-kartu">
+          <div class="momen-foto-wadah"><img id="momen-foto" alt="" hidden></div>
+          <div class="momen-teks">
+            <time class="momen-tanggal" id="momen-tanggal"></time>
+            <h4 id="momen-judul"></h4>
+            <p id="momen-cerita"></p>
+          </div>
+        </article>
+
+        <div class="momen-nav">
+          <button type="button" class="tombol-pelan" id="momen-lama">&larr; Lebih lama</button>
+          <span id="momen-urutan"></span>
+          <button type="button" class="tombol-pelan" id="momen-baru">Lebih baru &rarr;</button>
+        </div>
+
+        <form class="kotak-form momen-form" id="momen-form" autocomplete="off">
+          <label for="momen-nama">Nama (boleh dikosongkan)</label>
+          <input type="text" id="momen-nama" maxlength="30" placeholder="Anonim">
+          <label for="momen-pesan">Komentar</label>
+          <textarea id="momen-pesan" maxlength="300" rows="3" required placeholder="Tulis komentar soal momen ini..."></textarea>
+          <div class="kotak-bawah">
+            <span id="momen-hitung">0 / 300</span>
+            <button type="submit" class="tombol-kirim" id="momen-kirim">Kirim komentar</button>
+          </div>
+          <p class="kotak-status" id="momen-status" role="status"></p>
+        </form>
+
+        <ul class="momen-komentar" id="momen-komentar"></ul>
+      </div>
+
+      <h3 class="sub-judul galeri-judul">Galeri Foto</h3>
       <div class="galeri">
         <button type="button" class="foto"><img src="1.jpeg" alt="Foto kenangan XMPLB1"></button>
         <button type="button" class="foto"><img src="2.jpeg" alt="Foto kenangan XMPLB1"></button>
@@ -2425,6 +2482,7 @@
     // GANTI tanggalnya (bulan dihitung dari 0: Januari = 0, Desember = 11)
     const MULAI = new Date(2026, 6, 22); // 22 Juli 2026, hari pertama bersama
     const ACARA = [
+      { nama: "Classmeeting", tgl: new Date(2026, 11, 18) },
       { nama: "Naik kelas XI", tgl: new Date(2027, 5, 28) },
       { nama: "Kelulusan", tgl: new Date(2029, 5, 1) }
     ];
@@ -2947,6 +3005,145 @@
         setStatus("Gagal mengirim, coba lagi.", true);
       } finally {
         tombolKirim.disabled = false;
+      }
+    });
+
+
+    /* ===== Momen bulan ini (Firestore: momen/{id} + momen/{id}/komentar) ===== */
+    const momenEl = document.getElementById("momen");
+    const mFoto = document.getElementById("momen-foto");
+    const mTanggal = document.getElementById("momen-tanggal");
+    const mJudul = document.getElementById("momen-judul");
+    const mCerita = document.getElementById("momen-cerita");
+    const mUrutan = document.getElementById("momen-urutan");
+    const mLama = document.getElementById("momen-lama");
+    const mBaru = document.getElementById("momen-baru");
+    const mForm = document.getElementById("momen-form");
+    const mNama = document.getElementById("momen-nama");
+    const mPesan = document.getElementById("momen-pesan");
+    const mHitung = document.getElementById("momen-hitung");
+    const mKirim = document.getElementById("momen-kirim");
+    const mStatus = document.getElementById("momen-status");
+    const mKomentar = document.getElementById("momen-komentar");
+
+    let daftarMomen = [];
+    let idxMomen = 0;
+    let idTampil = null;
+    let batalKomentar = null;
+
+    function setStatusMomen(teks, error) {
+      mStatus.textContent = teks;
+      mStatus.classList.toggle("error", Boolean(error));
+    }
+
+    function fotoAman(nama) {
+      return typeof nama === "string" && /^[\w\-./]+\.(jpe?g|png|webp|gif)$/i.test(nama) && !nama.includes("..") && !nama.startsWith("/") && !nama.includes("//");
+    }
+
+    function tampilKomentar(docs) {
+      mKomentar.textContent = "";
+      docs.forEach((d) => {
+        const data = d.data({ serverTimestamps: "estimate" });
+        const li = document.createElement("li");
+        li.className = "komentar";
+        const isi = document.createElement("p");
+        isi.textContent = data.pesan;
+        const dari = document.createElement("p");
+        dari.className = "komentar-dari";
+        dari.textContent = "- " + (data.nama || "Anonim");
+        const waktu = document.createElement("time");
+        const tgl = data.waktu ? data.waktu.toDate() : new Date();
+        waktu.dateTime = tgl.toISOString();
+        waktu.textContent = tgl.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+        dari.appendChild(waktu);
+        li.append(isi, dari);
+        mKomentar.appendChild(li);
+      });
+    }
+
+    function renderMomen() {
+      if (!daftarMomen.length) {
+        momenEl.hidden = true;
+        if (batalKomentar) { batalKomentar(); batalKomentar = null; }
+        idTampil = null;
+        return;
+      }
+      if (idxMomen >= daftarMomen.length) idxMomen = 0;
+      const m = daftarMomen[idxMomen];
+      momenEl.hidden = false;
+
+      mJudul.textContent = m.judul || "";
+      mCerita.textContent = m.cerita || "";
+      const tgl = m.tanggal ? new Date(m.tanggal + "T00:00:00") : null;
+      mTanggal.textContent = tgl && !isNaN(tgl) ? tgl.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) : "";
+      if (fotoAman(m.foto)) {
+        mFoto.src = m.foto;
+        mFoto.alt = "Foto momen: " + (m.judul || "");
+        mFoto.hidden = false;
+      } else {
+        mFoto.hidden = true;
+      }
+      mUrutan.textContent = "Momen " + (daftarMomen.length - idxMomen) + " dari " + daftarMomen.length;
+      mBaru.disabled = idxMomen === 0;
+      mLama.disabled = idxMomen === daftarMomen.length - 1;
+
+      if (idTampil !== m.id) {
+        idTampil = m.id;
+        if (batalKomentar) batalKomentar();
+        mKomentar.textContent = "";
+        batalKomentar = onSnapshot(
+          query(collection(db, "momen", m.id, "komentar"), orderBy("waktu", "desc"), limit(50)),
+          (snap) => tampilKomentar(snap.docs),
+          () => { mKomentar.textContent = ""; }
+        );
+      }
+    }
+
+    onSnapshot(
+      query(collection(db, "momen"), orderBy("tanggal", "desc"), limit(24)),
+      (snap) => {
+        daftarMomen = snap.docs.map((d) => Object.assign({ id: d.id }, d.data()));
+        renderMomen();
+      },
+      () => { momenEl.hidden = true; }
+    );
+
+    mLama.addEventListener("click", () => { idxMomen = Math.min(idxMomen + 1, daftarMomen.length - 1); renderMomen(); });
+    mBaru.addEventListener("click", () => { idxMomen = Math.max(idxMomen - 1, 0); renderMomen(); });
+
+    mPesan.addEventListener("input", () => { mHitung.textContent = mPesan.value.length + " / 300"; });
+
+    mForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const pesan = mPesan.value.trim();
+      const nama = mNama.value.trim().slice(0, 30);
+      if (!idTampil) return;
+
+      if (pesan.length < 2) {
+        setStatusMomen("Komentarnya terlalu pendek.", true);
+        return;
+      }
+
+      try {
+        const terakhir = Number(localStorage.getItem("momenTerakhir") || 0);
+        if (Date.now() - terakhir < JEDA_MS) {
+          setStatusMomen("Tunggu sebentar sebelum kirim komentar lagi.", true);
+          return;
+        }
+      } catch (err) { /* storage tidak tersedia, lanjut saja */ }
+
+      mKirim.disabled = true;
+      setStatusMomen("Mengirim...");
+      try {
+        await addDoc(collection(db, "momen", idTampil, "komentar"), { nama: nama, pesan: pesan, waktu: serverTimestamp() });
+        try { localStorage.setItem("momenTerakhir", String(Date.now())); } catch (err) {}
+        mForm.reset();
+        mHitung.textContent = "0 / 300";
+        setStatusMomen("Komentar terkirim. Makasih!");
+      } catch (err) {
+        setStatusMomen("Gagal mengirim, coba lagi.", true);
+      } finally {
+        mKirim.disabled = false;
       }
     });
 
