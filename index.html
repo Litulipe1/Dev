@@ -411,6 +411,9 @@
       gap: 2.5rem 3rem;
     }
 
+    .galeri .foto img { transition: opacity 0.45s ease; }
+    .galeri .foto img.pudar { opacity: 0; }
+
     .galeri.geser { padding-top: 2rem; }
     .galeri.geser .halaman-isi {
       grid-template-columns: repeat(3, 1fr);
@@ -1542,6 +1545,99 @@
 
     bagiHalaman(document.querySelector(".struktur-grid"), 4);
     bagiHalaman(document.querySelector(".galeri"), 6, 4000);
+
+    /* ===== Album: foto saling tukar tempat secara acak ===== */
+    function acakFoto(wadah, jeda) {
+      if (!wadah) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const semua = Array.from(wadah.querySelectorAll(".foto img"));
+      if (semua.length < 2) return;
+
+      let terlihat = false;
+      let tahanSampai = 0;
+      const tahan = (ms) => { tahanSampai = Date.now() + ms; };
+
+      ["pointerdown", "touchstart", "wheel"].forEach((nama) => {
+        wadah.addEventListener(nama, () => tahan(6000), { passive: true });
+      });
+      wadah.addEventListener("mouseenter", () => { tahanSampai = Infinity; });
+      wadah.addEventListener("mouseleave", () => tahan(2000));
+
+      new IntersectionObserver((entri) => {
+        terlihat = entri[0].isIntersecting;
+      }, { threshold: 0.3 }).observe(wadah);
+
+      /* foto yang lagi kelihatan (halaman aktif) dan foto di halaman lain */
+      function bagianFoto() {
+        const halaman = Array.from(wadah.querySelectorAll(":scope > .halaman-geser"));
+        if (halaman.length < 2) return { kelihatan: semua, lain: [] };
+        const langkah = (halaman[1].offsetLeft - halaman[0].offsetLeft) || 1;
+        const n = Math.min(Math.max(Math.round(wadah.scrollLeft / langkah), 0), halaman.length - 1);
+        const kelihatan = Array.from(halaman[n].querySelectorAll(".foto img"));
+        return { kelihatan, lain: semua.filter((el) => !kelihatan.includes(el)) };
+      }
+
+      /* giliran acak yang adil: semua foto kebagian ganti dulu sebelum ada yang diulang */
+      let antrean = [];
+      let terakhir = [];
+
+      function kocok(daftar) {
+        for (let k = daftar.length - 1; k > 0; k--) {
+          const m = Math.floor(Math.random() * (k + 1));
+          [daftar[k], daftar[m]] = [daftar[m], daftar[k]];
+        }
+        return daftar;
+      }
+
+      function ambilAdil(pilihan, jumlah) {
+        let kandidat = antrean.filter((el) => pilihan.includes(el));
+        if (kandidat.length < jumlah) {
+          const baru = kocok(pilihan.slice());
+          /* yang barusan ditukar ditaruh di belakang supaya tidak langsung terulang */
+          baru.sort((x, y) => terakhir.includes(x) - terakhir.includes(y));
+          antrean = antrean.filter((el) => !pilihan.includes(el)).concat(baru);
+          kandidat = baru;
+        }
+        const diambil = kandidat.slice(0, jumlah);
+        antrean = antrean.filter((el) => !diambil.includes(el));
+        return diambil;
+      }
+
+      function ambilPasangan() {
+        const { kelihatan, lain } = bagianFoto();
+        let pasangan;
+        if (lain.length === 0) {
+          pasangan = ambilAdil(kelihatan, 2);
+        } else {
+          /* satu foto yang kelihatan ditukar dengan satu foto dari halaman lain */
+          pasangan = [ambilAdil(kelihatan, 1)[0], ambilAdil(lain, 1)[0]];
+        }
+        terakhir = pasangan;
+        return pasangan;
+      }
+
+      setInterval(() => {
+        if (document.hidden || !terlihat || Date.now() < tahanSampai) return;
+        if (document.querySelector("dialog[open]")) return;
+
+        const [a, b] = ambilPasangan();
+
+        a.classList.add("pudar");
+        b.classList.add("pudar");
+        setTimeout(() => {
+          const srcA = a.getAttribute("src");
+          const altA = a.getAttribute("alt");
+          a.setAttribute("src", b.getAttribute("src"));
+          a.setAttribute("alt", b.getAttribute("alt"));
+          b.setAttribute("src", srcA);
+          b.setAttribute("alt", altA);
+          a.classList.remove("pudar");
+          b.classList.remove("pudar");
+        }, 450);
+      }, jeda);
+    }
+
+    acakFoto(document.querySelector(".galeri"), 3000);
 
     /* ===== Hero: pecah teks jadi huruf (buat animasi loncat) ===== */
     document.querySelectorAll(".hero-teks h1, .hero-teks p").forEach((el) => {
