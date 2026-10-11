@@ -264,12 +264,9 @@
     }
 
     #cerita { background: var(--kertas); }
-    #gallery { background: var(--putih); }
     #prestasi { background: var(--putih); }
 
     /* ===== Struktur Kelas ===== */
-    #novastra-people { background: var(--kertas); }
-
     .struktur-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -755,8 +752,6 @@
 
     .kotak-daftar {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 2.5rem 2rem;
       margin-top: 3rem;
       list-style: none;
     }
@@ -1198,8 +1193,6 @@
       opacity: 0.5;
     }
 
-    .jab-foto.grup::before { content: "\1F465"; }
-
     .jab-foto img {
       position: relative;
       display: block;
@@ -1227,9 +1220,6 @@
       line-height: 1.1;
       color: rgba(255, 255, 255, 0.92);
     }
-
-    .jab-merah { background: var(--merah); }
-    .jab-merah .jab-role { color: #fff; }
 
     .baris-cabang {
       display: flex;
@@ -1427,12 +1417,7 @@
         background: linear-gradient(0deg, rgba(14, 22, 27, 0.8), rgba(14, 22, 27, 0.3));
       }
 
-      .hero-teks {
-        top: 50%;
-        bottom: auto;
-        right: var(--sisi);
-        transform: translateY(-50%);
-      }
+      .hero-teks { right: var(--sisi); }
 
       .hero-teks h1 { font-size: clamp(1.8rem, 8vw, 2.4rem); }
       .hero-teks p { font-size: 1.05rem; }
@@ -2175,12 +2160,10 @@
       if (Math.abs(selisih) > 50) bukaFoto(fotoAktif + (selisih < 0 ? 1 : -1));
     }, { passive: true });
 
-    /* ===== Garis progres scroll & tombol ke atas ===== */
+    /* ===== Tombol ke atas & efek hero saat di-scroll ===== */
     const keAtas = document.getElementById("ke-atas");
 
     function aturScroll() {
-      const maks = document.documentElement.scrollHeight - window.innerHeight;
-      const bagian = maks > 0 ? Math.min(window.scrollY / maks, 1) : 0;
       keAtas.classList.toggle("tampil", window.scrollY > 700);
 
       if (!kurangiGerak) {
@@ -2280,7 +2263,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, collection, addDoc, query, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    /* ===== ISI DENGAN CONFIG FIREBASE KAMU ===== */
+    /* ===== Config Firebase ===== */
     const firebaseConfig = {
       apiKey: "AIzaSyDJ6i339NjAMa498ObrDDr1UWDtGLTzEKg",
       authDomain: "xmplb1-4b9d2.firebaseapp.com",
@@ -2493,158 +2476,153 @@
       return baris;
     }
 
-    if (firebaseConfig.apiKey.startsWith("ISI_")) {
-      tombolKirim.disabled = true;
-      setStatus("Kotak surat belum diaktifkan.", true);
-    } else {
-      const db = getFirestore(initializeApp(firebaseConfig));
-      const koleksi = collection(db, "surat");
+    const db = getFirestore(initializeApp(firebaseConfig));
+    const koleksi = collection(db, "surat");
 
-      function tampilkan(docs) {
-        hentiLagu();
-        daftar.textContent = "";
-        kosong.hidden = docs.length > 0;
-        docs.forEach((d) => {
-          const data = d.data({ serverTimestamps: "estimate" });
-          const li = document.createElement("li");
-          li.className = "lembar";
+    function tampilkan(docs) {
+      hentiLagu();
+      daftar.textContent = "";
+      kosong.hidden = docs.length > 0;
+      docs.forEach((d) => {
+        const data = d.data({ serverTimestamps: "estimate" });
+        const li = document.createElement("li");
+        li.className = "lembar";
 
-          const isi = document.createElement("p");
-          isi.className = "lembar-isi";
-          isi.textContent = data.pesan;
+        const isi = document.createElement("p");
+        isi.className = "lembar-isi";
+        isi.textContent = data.pesan;
 
-          const dari = document.createElement("p");
-          dari.className = "lembar-dari";
-          dari.textContent = "- " + (data.nama || "Anonim");
+        const dari = document.createElement("p");
+        dari.className = "lembar-dari";
+        dari.textContent = "- " + (data.nama || "Anonim");
 
-          const waktu = document.createElement("time");
-          waktu.className = "lembar-waktu";
-          const tgl = data.waktu ? data.waktu.toDate() : new Date();
-          waktu.dateTime = tgl.toISOString();
-          waktu.textContent = tgl.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
-          dari.appendChild(waktu);
+        const waktu = document.createElement("time");
+        waktu.className = "lembar-waktu";
+        const tgl = data.waktu ? data.waktu.toDate() : new Date();
+        waktu.dateTime = tgl.toISOString();
+        waktu.textContent = tgl.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+        dari.appendChild(waktu);
 
-          li.append(isi);
-          const baris = barisLagu(data);
-          if (baris) li.append(baris);
-          li.append(dari);
-          daftar.appendChild(li);
-        });
-      }
-
-      onSnapshot(
-        query(koleksi, orderBy("waktu", "desc"), limit(50)),
-        (snap) => tampilkan(snap.docs),
-        () => {
-          kosong.hidden = false;
-          kosong.textContent = "Surat belum bisa dimuat. Coba refresh halaman.";
-        }
-      );
-
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const pesan = inputPesan.value.trim();
-        const nama = inputNama.value.trim();
-
-        if (pesan.length < 3) {
-          setStatus("Suratnya terlalu pendek.", true);
-          return;
-        }
-
-        if (inputLagu.value.trim() && !laguTerpilih) {
-          setStatus("Pilih lagunya dari hasil pencarian dulu, atau kosongin kolom lagu.", true);
-          return;
-        }
-
-        try {
-          const terakhir = Number(localStorage.getItem("suratTerakhir") || 0);
-          if (Date.now() - terakhir < JEDA_MS) {
-            setStatus("Tunggu sebentar sebelum kirim surat lagi.", true);
-            return;
-          }
-        } catch (err) { /* storage tidak tersedia, lanjut saja */ }
-
-        tombolKirim.disabled = true;
-        setStatus("Mengirim...");
-
-        try {
-          const suratBaru = { nama: nama, pesan: pesan, waktu: serverTimestamp() };
-          if (laguTerpilih) {
-            suratBaru.laguJudul = laguTerpilih.judul;
-            suratBaru.laguArtis = laguTerpilih.artis;
-            suratBaru.laguCover = laguTerpilih.cover;
-            suratBaru.laguPreview = laguTerpilih.preview;
-          }
-          await addDoc(koleksi, suratBaru);
-          try { localStorage.setItem("suratTerakhir", String(Date.now())); } catch (err) {}
-          form.reset();
-          hitung.textContent = "0 / 600";
-          setStatus("Surat terkirim. Terima kasih!");
-          document.dispatchEvent(new CustomEvent("surat-terkirim"));
-        } catch (err) {
-          setStatus("Gagal mengirim, coba lagi.", true);
-        } finally {
-          tombolKirim.disabled = false;
-        }
-      });
-
-      /* ===== Form bantuan / laporan ===== */
-      const formBantuan = document.getElementById("bantuan");
-      const bJenis = document.getElementById("bantuan-jenis");
-      const bPesan = document.getElementById("bantuan-pesan");
-      const bKontak = document.getElementById("bantuan-kontak");
-      const bHitung = document.getElementById("bantuan-hitung");
-      const bKirim = document.getElementById("bantuan-kirim");
-      const bStatus = document.getElementById("bantuan-status");
-      const koleksiLaporan = collection(db, "laporan");
-
-      function setStatusBantuan(teks, error) {
-        bStatus.textContent = teks;
-        bStatus.classList.toggle("error", Boolean(error));
-      }
-
-      bPesan.addEventListener("input", () => {
-        bHitung.textContent = bPesan.value.length + " / 600";
-      });
-
-      formBantuan.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const pesan = bPesan.value.trim();
-
-        if (pesan.length < 5) {
-          setStatusBantuan("Ceritanya terlalu pendek, tambahin dikit ya.", true);
-          return;
-        }
-
-        try {
-          const terakhir = Number(localStorage.getItem("laporanTerakhir") || 0);
-          if (Date.now() - terakhir < JEDA_MS) {
-            setStatusBantuan("Tunggu bentar ya sebelum kirim lagi.", true);
-            return;
-          }
-        } catch (err) { /* storage tidak tersedia, lanjut saja */ }
-
-        bKirim.disabled = true;
-        setStatusBantuan("Mengirim...");
-
-        try {
-          await addDoc(koleksiLaporan, {
-            jenis: bJenis.value,
-            pesan: pesan,
-            kontak: bKontak.value.trim(),
-            waktu: serverTimestamp()
-          });
-          try { localStorage.setItem("laporanTerakhir", String(Date.now())); } catch (err) {}
-          formBantuan.reset();
-          bHitung.textContent = "0 / 600";
-          setStatusBantuan("Udah terkirim, makasih! Nanti admin cek ya.");
-        } catch (err) {
-          setStatusBantuan("Gagal mengirim, coba lagi.", true);
-        } finally {
-          bKirim.disabled = false;
-        }
+        li.append(isi);
+        const baris = barisLagu(data);
+        if (baris) li.append(baris);
+        li.append(dari);
+        daftar.appendChild(li);
       });
     }
+
+    onSnapshot(
+      query(koleksi, orderBy("waktu", "desc"), limit(50)),
+      (snap) => tampilkan(snap.docs),
+      () => {
+        kosong.hidden = false;
+        kosong.textContent = "Surat belum bisa dimuat. Coba refresh halaman.";
+      }
+    );
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const pesan = inputPesan.value.trim();
+      const nama = inputNama.value.trim();
+
+      if (pesan.length < 3) {
+        setStatus("Suratnya terlalu pendek.", true);
+        return;
+      }
+
+      if (inputLagu.value.trim() && !laguTerpilih) {
+        setStatus("Pilih lagunya dari hasil pencarian dulu, atau kosongin kolom lagu.", true);
+        return;
+      }
+
+      try {
+        const terakhir = Number(localStorage.getItem("suratTerakhir") || 0);
+        if (Date.now() - terakhir < JEDA_MS) {
+          setStatus("Tunggu sebentar sebelum kirim surat lagi.", true);
+          return;
+        }
+      } catch (err) { /* storage tidak tersedia, lanjut saja */ }
+
+      tombolKirim.disabled = true;
+      setStatus("Mengirim...");
+
+      try {
+        const suratBaru = { nama: nama, pesan: pesan, waktu: serverTimestamp() };
+        if (laguTerpilih) {
+          suratBaru.laguJudul = laguTerpilih.judul;
+          suratBaru.laguArtis = laguTerpilih.artis;
+          suratBaru.laguCover = laguTerpilih.cover;
+          suratBaru.laguPreview = laguTerpilih.preview;
+        }
+        await addDoc(koleksi, suratBaru);
+        try { localStorage.setItem("suratTerakhir", String(Date.now())); } catch (err) {}
+        form.reset();
+        hitung.textContent = "0 / 600";
+        setStatus("Surat terkirim. Terima kasih!");
+        document.dispatchEvent(new CustomEvent("surat-terkirim"));
+      } catch (err) {
+        setStatus("Gagal mengirim, coba lagi.", true);
+      } finally {
+        tombolKirim.disabled = false;
+      }
+    });
+
+    /* ===== Form bantuan / laporan ===== */
+    const formBantuan = document.getElementById("bantuan");
+    const bJenis = document.getElementById("bantuan-jenis");
+    const bPesan = document.getElementById("bantuan-pesan");
+    const bKontak = document.getElementById("bantuan-kontak");
+    const bHitung = document.getElementById("bantuan-hitung");
+    const bKirim = document.getElementById("bantuan-kirim");
+    const bStatus = document.getElementById("bantuan-status");
+    const koleksiLaporan = collection(db, "laporan");
+
+    function setStatusBantuan(teks, error) {
+      bStatus.textContent = teks;
+      bStatus.classList.toggle("error", Boolean(error));
+    }
+
+    bPesan.addEventListener("input", () => {
+      bHitung.textContent = bPesan.value.length + " / 600";
+    });
+
+    formBantuan.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const pesan = bPesan.value.trim();
+
+      if (pesan.length < 5) {
+        setStatusBantuan("Ceritanya terlalu pendek, tambahin dikit ya.", true);
+        return;
+      }
+
+      try {
+        const terakhir = Number(localStorage.getItem("laporanTerakhir") || 0);
+        if (Date.now() - terakhir < JEDA_MS) {
+          setStatusBantuan("Tunggu bentar ya sebelum kirim lagi.", true);
+          return;
+        }
+      } catch (err) { /* storage tidak tersedia, lanjut saja */ }
+
+      bKirim.disabled = true;
+      setStatusBantuan("Mengirim...");
+
+      try {
+        await addDoc(koleksiLaporan, {
+          jenis: bJenis.value,
+          pesan: pesan,
+          kontak: bKontak.value.trim(),
+          waktu: serverTimestamp()
+        });
+        try { localStorage.setItem("laporanTerakhir", String(Date.now())); } catch (err) {}
+        formBantuan.reset();
+        bHitung.textContent = "0 / 600";
+        setStatusBantuan("Udah terkirim, makasih! Nanti admin cek ya.");
+      } catch (err) {
+        setStatusBantuan("Gagal mengirim, coba lagi.", true);
+      } finally {
+        bKirim.disabled = false;
+      }
+    });
   </script>
 </body>
 </html>
