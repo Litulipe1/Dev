@@ -1531,7 +1531,6 @@
 
     /* ===== Tombol tema ===== */
     .tombol-tema { width: 44px; height: 44px; border: none; background: transparent; color: #fff; font-size: 1.3rem; cursor: pointer; }
-    @media (max-width: 860px) { .tombol-tema { margin-left: auto; } }
 
     /* ===== Mode gelap ===== */
     :root[data-tema="dark"] { color-scheme: dark; --tinta: #e8eeea; --kertas: #12191d; --sage: #182227; --putih: #1b262c; --merah: #ef4a2e; }
@@ -1597,6 +1596,62 @@
     .komentar-dari time { display: block; font-family: var(--font-judul); font-size: 0.72rem; font-weight: 500; color: rgba(31, 45, 52, 0.55); }
     :root[data-tema="dark"] .komentar-dari time { color: rgba(255, 255, 255, 0.55); }
     @media (max-width: 760px) { .momen-kartu { grid-template-columns: 1fr; gap: 1.2rem; } }
+
+    /* ===== Navbar: dirapikan ===== */
+    .navbar { gap: 1.5rem; }
+    .nav-aksi { display: flex; align-items: center; gap: 0.4rem; }
+    .tombol-tema { width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.12); font-size: 1.1rem; transition: background 0.2s ease; }
+    .tombol-tema:hover { background: rgba(255, 255, 255, 0.24); }
+    .lainnya { position: relative; }
+    .lainnya-tombol {
+      position: relative; display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0;
+      border: 0; background: transparent; color: #fff; font-size: 0.95rem; font-weight: 600; cursor: pointer; white-space: nowrap;
+    }
+    .lainnya-tombol::after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--merah);
+      transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease;
+    }
+    .lainnya-tombol:hover::after, .lainnya-tombol.aktif::after { transform: scaleX(1); }
+    .lainnya-menu {
+      position: absolute; top: calc(100% + 0.9rem); right: 0; display: none; min-width: 190px; padding: 0.5rem;
+      list-style: none; border-radius: 12px; background: rgba(31, 45, 52, 0.98); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    }
+    .lainnya.buka .lainnya-menu { display: block; }
+    .lainnya-menu a { display: block; padding: 0.55rem 0.8rem; border-radius: 8px; }
+    .lainnya-menu a::after { display: none; }
+    .lainnya-menu a:hover, .lainnya-menu a.aktif { background: rgba(255, 255, 255, 0.1); }
+    .hero-teks { top: calc(50% + 2rem); }
+    @media (min-width: 861px) { .menu { margin-left: auto; } }
+    @media (min-width: 1101px) { .menu { gap: 1.6rem; } }
+    @media (max-width: 860px) {
+      .lainnya { display: contents; }
+      .lainnya-tombol { display: none; }
+      .lainnya-menu { position: static; display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; padding: 0; background: transparent; box-shadow: none; }
+      .lainnya-menu a { padding: 0.6rem 0; border-radius: 0; font-size: 1rem; }
+      .lainnya-menu a:hover, .lainnya-menu a.aktif { background: transparent; }
+    }
+
+    /* ===== Game: Mafia ===== */
+    #game { background: var(--sage); }
+    .mafia-kotak { max-width: 720px; margin-top: 2rem; }
+    .mafia-baris { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .kotak-form label.mafia-cekbaris { display: flex; align-items: center; margin-bottom: 0.7rem; font-size: 1rem; font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--tinta); cursor: pointer; }
+    .kotak-form input.mafia-cek { display: inline-block; width: auto; margin: 0 0.6rem 0 0; }
+    .mafia-judul { font-family: var(--font-santai); font-size: 2.2rem; line-height: 1.1; color: var(--merah); }
+    .mafia-info { margin: 0.5rem 0 1rem; font-family: var(--font-isi); line-height: 1.7; overflow-wrap: anywhere; }
+    .mafia-besar { margin: 1rem 0; font-family: var(--font-santai); font-size: clamp(2.4rem, 9vw, 4rem); font-weight: 700; line-height: 1.1; text-align: center; color: var(--merah); overflow-wrap: anywhere; }
+    .mafia-ikon { font-size: 4rem; line-height: 1; text-align: center; }
+    .mafia-peran-nama { font-family: var(--font-santai); font-size: 3rem; font-weight: 700; text-align: center; color: var(--merah); }
+    .mafia-pilih { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.6rem; margin: 1rem 0; }
+    .mafia-pilih button { padding: 0.7rem 0.5rem; border: 2px solid rgba(31, 45, 52, 0.25); border-radius: 10px; background: var(--kertas); color: var(--tinta); font-weight: 700; cursor: pointer; overflow-wrap: anywhere; }
+    .mafia-pilih button.dipilih { border-color: var(--merah); background: var(--merah); color: #fff; }
+    .mafia-timer { margin: 0.5rem 0; font-family: var(--font-bagian); font-size: clamp(3rem, 12vw, 5rem); text-align: center; }
+    .mafia-aksi { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1rem; }
+    .mafia-hasil { margin: 0.8rem 0; padding: 0.9rem 1rem; border-radius: 10px; background: var(--kertas); font-weight: 700; overflow-wrap: anywhere; }
+    .mafia-tabel { display: grid; gap: 0.4rem; margin: 1rem 0; list-style: none; }
+    .mafia-tabel li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.5rem 0.8rem; border-radius: 8px; background: var(--kertas); }
+    .mafia-tabel li.mati { opacity: 0.55; text-decoration: line-through; }
+    @media (max-width: 560px) { .mafia-baris { grid-template-columns: 1fr; } }
   </style>
 </head>
 
@@ -1604,20 +1659,28 @@
 
   <nav class="navbar" id="navbar">
     <a href="index.html" class="logo">XMPLB1</a>
-    <button type="button" class="tombol-tema" id="tombol-tema" aria-label="Ganti ke mode gelap">🌙</button>
-    <button type="button" class="tombol-menu" id="tombol-menu" aria-label="Buka menu" aria-expanded="false" aria-controls="menu">&#9776;</button>
     <ul class="menu" id="menu">
       <li><a href="#home">Home</a></li>
-      <li><a href="#anggota-kelas">Anggota Kelas</a></li>
-      <li><a href="#struktur-kelas">Struktur</a></li>
-      <li><a href="#pengacak">Pengacak</a></li>
+      <li><a href="#anggota-kelas">Anggota</a></li>
       <li><a href="#album">Album</a></li>
       <li><a href="#surat-kelas">Surat</a></li>
       <li><a href="#playlist">Playlist</a></li>
-      <li><a href="#prestasi">Prestasi</a></li>
       <li><a href="#cerita">Cerita</a></li>
-      <li><a href="#kontak">Kontak</a></li>
+      <li class="lainnya" id="lainnya">
+        <button type="button" class="lainnya-tombol" id="lainnya-tombol" aria-expanded="false" aria-haspopup="true" aria-controls="lainnya-menu">Lainnya <span aria-hidden="true">&#9662;</span></button>
+        <ul class="lainnya-menu" id="lainnya-menu">
+          <li><a href="#struktur-kelas">Struktur</a></li>
+          <li><a href="#pengacak">Pengacak</a></li>
+          <li><a href="#game">Game</a></li>
+          <li><a href="#prestasi">Prestasi</a></li>
+          <li><a href="#kontak">Kontak</a></li>
+        </ul>
+      </li>
     </ul>
+    <div class="nav-aksi">
+      <button type="button" class="tombol-tema" id="tombol-tema" aria-label="Ganti ke mode gelap">🌙</button>
+      <button type="button" class="tombol-menu" id="tombol-menu" aria-label="Buka menu" aria-expanded="false" aria-controls="menu">&#9776;</button>
+    </div>
   </nav>
 
   <main>
@@ -1764,7 +1827,14 @@
       </div>
     </section>
 
-        <!-- Gallery -->
+        <!-- Game: Mafia -->
+    <section class="bagian" id="game">
+      <h2>Game Kelas &#128373;&#65039;</h2>
+      <p class="pengacak-intro">Mafia/Werewolf. HP dioper antar pemain buat bagi peran rahasia, lalu dipegang satu pemandu (nggak ikut main, misal ketua kelas atau guru) buat narasi malam, timer diskusi, dan voting. Jangan refresh halaman di tengah permainan.</p>
+      <div class="kotak-form mafia-kotak" id="mafia-isi"></div>
+    </section>
+
+    <!-- Gallery -->
     <section class="bagian" id="album">
       <h2>Album</h2>
       <p>Album kelas Novastra📸</p>
@@ -2037,6 +2107,7 @@
           }
         });
       });
+      document.getElementById("lainnya-tombol").classList.toggle("aktif", Boolean(menu.querySelector(".lainnya-menu a.aktif")));
     }, { rootMargin: "-45% 0px -50% 0px" });
 
     document.querySelectorAll("main section[id]").forEach((b) => pengamat.observe(b));
@@ -2482,6 +2553,7 @@
     // GANTI tanggalnya (bulan dihitung dari 0: Januari = 0, Desember = 11)
     const MULAI = new Date(2026, 6, 22); // 22 Juli 2026, hari pertama bersama
     const ACARA = [
+      { nama: "Classmeeting", tgl: new Date(2026, 11, 18) },
       { nama: "Naik kelas XI", tgl: new Date(2027, 5, 28) },
       { nama: "Kelulusan", tgl: new Date(2029, 5, 1) }
     ];
@@ -2697,6 +2769,350 @@
         });
         statusEl.textContent = nama.length + " orang dibagi ke " + n + " kelompok.";
       });
+    })();
+
+    /* ===== Navbar: menu "Lainnya" ===== */
+    const lainnya = document.getElementById("lainnya");
+    const lainnyaTombol = document.getElementById("lainnya-tombol");
+
+    function tutupLainnya() {
+      lainnya.classList.remove("buka");
+      lainnyaTombol.setAttribute("aria-expanded", "false");
+    }
+
+    lainnyaTombol.addEventListener("click", () => {
+      const buka = lainnya.classList.toggle("buka");
+      lainnyaTombol.setAttribute("aria-expanded", String(buka));
+    });
+    document.addEventListener("click", (e) => { if (!lainnya.contains(e.target)) tutupLainnya(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") tutupLainnya(); });
+    linkMenu.forEach((a) => a.addEventListener("click", tutupLainnya));
+
+    /* ===== Game: Mafia ===== */
+    (function mafiaGame() {
+      const wadah = document.getElementById("mafia-isi");
+      const PERAN = {
+        Mafia: { ikon: "\uD83D\uDD2A", info: "Kamu MAFIA. Tiap malam kamu dan temanmu memilih satu korban. Jangan sampai ketahuan!" },
+        Polisi: { ikon: "\uD83D\uDD75\uFE0F", info: "Kamu POLISI. Tiap malam kamu boleh mengecek satu orang: dia mafia atau bukan." },
+        Dokter: { ikon: "\uD83D\uDC89", info: "Kamu DOKTER. Tiap malam kamu memilih satu orang untuk diselamatkan (boleh dirimu sendiri)." },
+        Warga: { ikon: "\uD83C\uDFE0", info: "Kamu WARGA. Cari tahu siapa mafia lewat diskusi, lalu voting bareng." }
+      };
+      let pemain = [], malamKe = 1, urutBagi = 0, pilihan = {}, langkah = [], idx = 0, timer = null, sentuhMafia = false;
+      let pengaturan = { nama: "", polisi: true, dokter: true, suara: false, diskusi: 120 };
+
+      function el(tag, kelas, teks) {
+        const e = document.createElement(tag);
+        if (kelas) e.className = kelas;
+        if (teks !== undefined && teks !== null) e.textContent = teks;
+        return e;
+      }
+      function tombol(teks, kelas, aksi) {
+        const b = el("button", kelas || "tombol-kirim", teks);
+        b.type = "button";
+        b.addEventListener("click", aksi);
+        return b;
+      }
+      function baris(...anak) {
+        const d = el("div", "mafia-aksi");
+        d.append(...anak);
+        return d;
+      }
+      function kocok(d) {
+        for (let k = d.length - 1; k > 0; k--) {
+          const m = Math.floor(Math.random() * (k + 1));
+          [d[k], d[m]] = [d[m], d[k]];
+        }
+        return d;
+      }
+      function bersih() {
+        clearInterval(timer);
+        timer = null;
+        wadah.textContent = "";
+      }
+      function mmss(s) { return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+      function bunyi() {
+        try {
+          const c = new (window.AudioContext || window.webkitAudioContext)();
+          const o = c.createOscillator();
+          o.frequency.value = 660;
+          o.connect(c.destination);
+          o.start();
+          setTimeout(() => { o.stop(); c.close(); }, 400);
+        } catch (e) {}
+        try { if (navigator.vibrate) navigator.vibrate([200, 100, 200]); } catch (e) {}
+      }
+      function bicara(teks) {
+        if (!pengaturan.suara || !("speechSynthesis" in window)) return;
+        try {
+          speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(teks);
+          u.lang = "id-ID";
+          speechSynthesis.speak(u);
+        } catch (e) {}
+      }
+      function mundur(detik, tampil, selesai) {
+        clearInterval(timer);
+        let sisa = detik;
+        tampil.textContent = mmss(sisa);
+        timer = setInterval(() => {
+          sisa--;
+          tampil.textContent = mmss(sisa);
+          if (sisa <= 0) {
+            clearInterval(timer);
+            timer = null;
+            bunyi();
+            if (selesai) selesai();
+          }
+        }, 1000);
+      }
+      function hidup() { return pemain.filter((p) => p.hidup); }
+      function cekMenang() {
+        const m = hidup().filter((p) => p.peran === "Mafia").length;
+        const w = hidup().length - m;
+        if (m === 0) return "Warga";
+        if (m >= w) return "Mafia";
+        return null;
+      }
+      function daftarHidup() {
+        return el("p", "mafia-info", "Masih hidup (" + hidup().length + "): " + hidup().map((p) => p.nama).join(", "));
+      }
+
+      /* ---- Setup ---- */
+      function layarSetup() {
+        bersih();
+        if ("speechSynthesis" in window) { try { speechSynthesis.cancel(); } catch (e) {} }
+        sentuhMafia = false;
+
+        const lNama = el("label", null, "Pemain (satu nama per baris, pemandu jangan dimasukin)");
+        lNama.setAttribute("for", "mafia-nama");
+        const ta = el("textarea");
+        ta.id = "mafia-nama";
+        ta.rows = 7;
+        ta.placeholder = "Budi\nSari\nAndi\n...";
+        let awal = pengaturan.nama;
+        if (!awal) { const sumber = document.getElementById("acak-nama"); awal = sumber ? sumber.value : ""; }
+        ta.value = awal;
+        const hitungEl = el("p", "pengacak-sisa", "");
+        const ambil = tombol("Ambil dari Pengacak Nama", "tombol-pelan", () => {
+          const sumber = document.getElementById("acak-nama");
+          ta.value = sumber ? sumber.value : "";
+          ubah();
+        });
+
+        const lMafia = el("label", null, "Jumlah mafia");
+        lMafia.setAttribute("for", "mafia-jml");
+        const inMafia = el("input");
+        inMafia.type = "number"; inMafia.id = "mafia-jml"; inMafia.min = "1"; inMafia.value = "1"; inMafia.inputMode = "numeric";
+        inMafia.addEventListener("input", () => { sentuhMafia = true; });
+        const lDiskusi = el("label", null, "Waktu diskusi (detik)");
+        lDiskusi.setAttribute("for", "mafia-diskusi");
+        const inDiskusi = el("input");
+        inDiskusi.type = "number"; inDiskusi.id = "mafia-diskusi"; inDiskusi.min = "30"; inDiskusi.max = "600"; inDiskusi.value = String(pengaturan.diskusi); inDiskusi.inputMode = "numeric";
+        const kiri = el("div"); kiri.append(lMafia, inMafia);
+        const kanan = el("div"); kanan.append(lDiskusi, inDiskusi);
+        const grid = el("div", "mafia-baris"); grid.append(kiri, kanan);
+
+        function cek(teks, nyala) {
+          const l = el("label", "mafia-cekbaris");
+          const i = el("input", "mafia-cek");
+          i.type = "checkbox"; i.checked = nyala;
+          l.append(i, document.createTextNode(teks));
+          return [l, i];
+        }
+        const [lPolisi, cPolisi] = cek("Ada Polisi (cek 1 orang tiap malam)", pengaturan.polisi);
+        const [lDokter, cDokter] = cek("Ada Dokter (selamatkan 1 orang tiap malam)", pengaturan.dokter);
+        const [lSuara, cSuara] = cek("Suara narator (HP membacakan narasi)", pengaturan.suara);
+        const status = el("p", "kotak-status");
+        status.setAttribute("role", "status");
+
+        function ubah() {
+          const n = new Set(ta.value.split("\n").map((x) => x.trim()).filter(Boolean)).size;
+          hitungEl.textContent = n + " pemain";
+          if (!sentuhMafia) inMafia.value = String(Math.max(1, Math.floor(n / 4)));
+        }
+        ta.addEventListener("input", ubah);
+        ubah();
+
+        const mulai = tombol("Mulai & bagi peran", null, () => {
+          const err = (t) => { status.textContent = t; status.classList.add("error"); };
+          status.classList.remove("error");
+          const nama = Array.from(new Set(ta.value.split("\n").map((x) => x.trim()).filter(Boolean)));
+          const n = nama.length;
+          const m = parseInt(inMafia.value, 10);
+          if (n < 5) return err("Minimal 5 pemain.");
+          if (!m || m < 1) return err("Jumlah mafia minimal 1.");
+          if (m + (cPolisi.checked ? 1 : 0) + (cDokter.checked ? 1 : 0) > n) return err("Peran khusus lebih banyak dari pemain.");
+          if (m * 2 >= n) return err("Mafia kebanyakan. Harus kurang dari setengah pemain.");
+
+          pengaturan = {
+            nama: ta.value, polisi: cPolisi.checked, dokter: cDokter.checked, suara: cSuara.checked,
+            diskusi: Math.min(Math.max(parseInt(inDiskusi.value, 10) || 120, 30), 600)
+          };
+          const peran = [];
+          for (let i = 0; i < m; i++) peran.push("Mafia");
+          if (cPolisi.checked) peran.push("Polisi");
+          if (cDokter.checked) peran.push("Dokter");
+          while (peran.length < n) peran.push("Warga");
+          kocok(peran);
+          pemain = nama.map((nm, i) => ({ nama: nm, peran: peran[i], hidup: true }));
+          malamKe = 1;
+          urutBagi = 0;
+          layarBagi();
+        });
+
+        wadah.append(lNama, ta, hitungEl, baris(ambil), grid, lPolisi, lDokter);
+        if ("speechSynthesis" in window) wadah.append(lSuara);
+        wadah.append(baris(mulai), status);
+      }
+
+      /* ---- Bagi peran: HP dioper ---- */
+      function layarBagi() {
+        bersih();
+        const p = pemain[urutBagi];
+        wadah.append(
+          el("p", "mafia-info", "Pemain " + (urutBagi + 1) + " dari " + pemain.length),
+          el("p", "mafia-besar", p.nama),
+          el("p", "mafia-info", "Oper HP ke " + p.nama + ". Pemain lain jangan ngintip!"),
+          tombol("Aku " + p.nama + ", lihat peranku", null, layarPeran)
+        );
+      }
+
+      function layarPeran() {
+        bersih();
+        const p = pemain[urutBagi];
+        const d = PERAN[p.peran];
+        wadah.append(el("p", "mafia-ikon", d.ikon), el("p", "mafia-peran-nama", p.peran), el("p", "mafia-info", d.info));
+        if (p.peran === "Mafia") {
+          const teman = pemain.filter((x) => x.peran === "Mafia" && x !== p).map((x) => x.nama);
+          wadah.append(el("p", "mafia-hasil", teman.length ? "Temanmu sesama mafia: " + teman.join(", ") : "Kamu mafia sendirian."));
+        }
+        const terakhir = urutBagi === pemain.length - 1;
+        wadah.append(tombol(terakhir ? "Sembunyikan & mulai permainan" : "Sembunyikan & oper ke berikutnya", null, () => {
+          urutBagi++;
+          if (urutBagi < pemain.length) layarBagi(); else mulaiMalam();
+        }));
+      }
+
+      /* ---- Malam ---- */
+      function mulaiMalam() {
+        pilihan = {};
+        langkah = [{ jenis: "info", judul: "Malam ke-" + malamKe, teks: "Malam tiba. Semua pemain tutup mata dan tundukkan kepala." }];
+        langkah.push({ jenis: "pilih", peran: "Mafia", judul: "Mafia, buka mata", teks: "Mafia sepakati satu korban dengan isyarat tanpa suara. Pemandu, ketuk nama korbannya." });
+        if (pemain.some((p) => p.peran === "Dokter")) langkah.push({ jenis: "pilih", peran: "Dokter", judul: "Dokter, buka mata", teks: "Dokter, tunjuk satu orang yang mau diselamatkan. Pemandu, ketuk namanya." });
+        if (pemain.some((p) => p.peran === "Polisi")) langkah.push({ jenis: "pilih", peran: "Polisi", judul: "Polisi, buka mata", teks: "Polisi, tunjuk satu orang yang mau dicek. Pemandu, ketuk namanya." });
+        idx = 0;
+        layarLangkah();
+      }
+
+      function layarLangkah() {
+        bersih();
+        const l = langkah[idx];
+        wadah.append(el("p", "mafia-info", "Malam ke-" + malamKe + " · HP dipegang pemandu"), el("h3", "mafia-judul", l.judul), el("p", "mafia-info", l.teks));
+        bicara(l.judul + ". " + l.teks);
+        const berikut = () => { idx++; if (idx < langkah.length) layarLangkah(); else layarPagi(); };
+
+        if (l.jenis === "info") { wadah.append(tombol("Lanjut", null, berikut)); return; }
+
+        if (!hidup().some((p) => p.peran === l.peran)) {
+          const t = el("p", "mafia-timer", mmss(8));
+          const b = tombol("Lanjut", null, berikut);
+          b.disabled = true;
+          wadah.append(el("p", "mafia-hasil", "Pemain berperan ini sudah gugur. Tunggu sebentar biar nggak ketahuan, lalu lanjut."), t, b);
+          mundur(8, t, () => { b.disabled = false; });
+          return;
+        }
+
+        const kandidat = hidup().filter((p) => l.peran === "Mafia" ? p.peran !== "Mafia" : l.peran === "Polisi" ? p.peran !== "Polisi" : true);
+        const grid = el("div", "mafia-pilih");
+        const hasil = el("p", "mafia-hasil");
+        hasil.hidden = true;
+        const lanjut = tombol("Lanjut (tutup mata)", null, berikut);
+        lanjut.disabled = true;
+        kandidat.forEach((p) => {
+          const b = tombol(p.nama, "mafia-opsi", () => {
+            pilihan[l.peran] = p.nama;
+            grid.querySelectorAll("button").forEach((x) => x.classList.toggle("dipilih", x === b));
+            lanjut.disabled = false;
+            if (l.peran === "Polisi") {
+              hasil.hidden = false;
+              hasil.textContent = p.nama + (p.peran === "Mafia" ? " adalah MAFIA (kasih jempol ke polisi)" : " BUKAN mafia (kasih isyarat geleng ke polisi)");
+            }
+          });
+          grid.append(b);
+        });
+        wadah.append(grid, hasil, lanjut);
+      }
+
+      /* ---- Pagi, diskusi, voting ---- */
+      function layarPagi() {
+        bersih();
+        const korban = pilihan.Mafia;
+        let kalimat;
+        if (korban && korban !== pilihan.Dokter) {
+          const p = pemain.find((x) => x.nama === korban);
+          p.hidup = false;
+          kalimat = "Pagi tiba, semua buka mata. Semalam " + korban + " meninggal. Dia seorang " + p.peran + ".";
+        } else {
+          kalimat = "Pagi tiba, semua buka mata. Semalam tidak ada korban.";
+        }
+        wadah.append(el("p", "mafia-info", "Hari ke-" + malamKe), el("h3", "mafia-judul", "Pagi"), el("p", "mafia-hasil", kalimat));
+        bicara(kalimat);
+
+        const menang = cekMenang();
+        if (menang) { wadah.append(tombol("Lihat hasil akhir", null, () => layarSelesai(menang))); return; }
+
+        const t = el("p", "mafia-timer", mmss(pengaturan.diskusi));
+        const mulaiT = tombol("Mulai timer diskusi", "tombol-pelan", () => { mulaiT.disabled = true; mundur(pengaturan.diskusi, t, null); });
+        wadah.append(daftarHidup(), el("p", "mafia-info", "Diskusi: siapa yang mencurigakan?"), t, baris(mulaiT, tombol("Lanjut ke voting", null, layarVote)));
+      }
+
+      function layarVote() {
+        bersih();
+        wadah.append(el("h3", "mafia-judul", "Voting"), el("p", "mafia-info", "Hitung suara, lalu ketuk nama pemain yang paling banyak dipilih."));
+        let terpilih = null;
+        const grid = el("div", "mafia-pilih");
+        const keluarkan = tombol("Keluarkan pemain terpilih", null, () => selesaiVote(terpilih));
+        keluarkan.disabled = true;
+        hidup().forEach((p) => {
+          const b = tombol(p.nama, "mafia-opsi", () => {
+            terpilih = p;
+            grid.querySelectorAll("button").forEach((x) => x.classList.toggle("dipilih", x === b));
+            keluarkan.disabled = false;
+            keluarkan.textContent = "Keluarkan " + p.nama;
+          });
+          grid.append(b);
+        });
+        wadah.append(grid, baris(keluarkan, tombol("Seri, nggak ada yang keluar", "tombol-pelan", () => selesaiVote(null))));
+      }
+
+      function selesaiVote(p) {
+        bersih();
+        let kal;
+        if (p) { p.hidup = false; kal = p.nama + " dikeluarkan lewat voting. Dia seorang " + p.peran + "."; }
+        else kal = "Voting seri. Tidak ada yang dikeluarkan.";
+        wadah.append(el("h3", "mafia-judul", "Hasil voting"), el("p", "mafia-hasil", kal));
+        bicara(kal);
+        const menang = cekMenang();
+        if (menang) wadah.append(tombol("Lihat hasil akhir", null, () => layarSelesai(menang)));
+        else wadah.append(daftarHidup(), tombol("Lanjut ke malam berikutnya", null, () => { malamKe++; mulaiMalam(); }));
+      }
+
+      function layarSelesai(menang) {
+        bersih();
+        const judul = menang === "Mafia" ? "Mafia menang! \uD83D\uDD2A" : "Warga menang! \uD83C\uDF89";
+        wadah.append(el("h3", "mafia-judul", judul));
+        const ul = el("ul", "mafia-tabel");
+        pemain.forEach((p) => {
+          const li = el("li", p.hidup ? "" : "mati");
+          li.append(el("span", null, p.nama), el("span", null, PERAN[p.peran].ikon + " " + p.peran));
+          ul.append(li);
+        });
+        wadah.append(ul, baris(tombol("Main lagi", null, layarSetup)));
+        bicara(judul);
+        if (menang === "Warga") konfeti();
+      }
+
+      layarSetup();
     })();
   </script>
   <script type="module">
